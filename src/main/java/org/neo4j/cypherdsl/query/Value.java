@@ -19,17 +19,9 @@
  */
 package org.neo4j.cypherdsl.query;
 
-import static org.neo4j.cypherdsl.CypherQuery.literal;
+import org.neo4j.cypherdsl.expression.*;
 
-import org.neo4j.cypherdsl.expression.BooleanExpression;
-import org.neo4j.cypherdsl.expression.CollectionExpression;
-import org.neo4j.cypherdsl.expression.Expression;
-import org.neo4j.cypherdsl.expression.NodeExpression;
-import org.neo4j.cypherdsl.expression.NumericExpression;
-import org.neo4j.cypherdsl.expression.PathExpression;
-import org.neo4j.cypherdsl.expression.RelationshipExpression;
-import org.neo4j.cypherdsl.expression.ScalarExpression;
-import org.neo4j.cypherdsl.expression.StringExpression;
+import static org.neo4j.cypherdsl.CypherQuery.literal;
 
 /**
  * Handles a single value that corresponds to any expression. Optionally

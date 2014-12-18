@@ -17,32 +17,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.neo4j.cypherdsl.querydsl
 
-package org.neo4j.cypherdsl.query.clause;
-
-import org.neo4j.cypherdsl.expression.ReferenceExpression;
-
-import java.util.ArrayList;
+import com.mysema.query.annotations.QueryEntity
 
 /**
- * CREATE clause
+ * Person entity
  */
-public class DeleteClause
-        extends Clause
-{
-    private final ArrayList<ReferenceExpression> expressions = new ArrayList<ReferenceExpression>();
+@QueryEntity class Person {
+  private[querydsl] var firstName: String = null
+  private[querydsl] var age: Int = 0
 
-    public DeleteClause( Iterable<ReferenceExpression> expressions )
-    {
-        for ( ReferenceExpression expression : expressions )
-        {
-            this.expressions.add( expression );
-        }
-    }
+  def getFirstName: String = {
+    return firstName
+  }
 
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        clauseAsString( builder, "DELETE", expressions, "," );
-    }
+  def getAge: Int = {
+    return age
+  }
 }

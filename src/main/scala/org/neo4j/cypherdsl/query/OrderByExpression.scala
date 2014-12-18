@@ -17,32 +17,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.neo4j.cypherdsl.query
 
-package org.neo4j.cypherdsl.query.clause;
 
-import org.neo4j.cypherdsl.expression.ReferenceExpression;
+import org.neo4j.cypherdsl._
 
-import java.util.ArrayList;
+import org.neo4j.cypherdsl.expression.Expression
+import java.lang.StringBuilder
 
 /**
- * CREATE clause
+ * Provides the possible expressions for the ORDER BY clause.
  */
-public class DeleteClause
-        extends Clause
-{
-    private final ArrayList<ReferenceExpression> expressions = new ArrayList<ReferenceExpression>();
+class OrderByExpression(expression: Expression, order: Order.Value) extends AbstractExpression {
 
-    public DeleteClause( Iterable<ReferenceExpression> expressions )
-    {
-        for ( ReferenceExpression expression : expressions )
-        {
-            this.expressions.add( expression );
-        }
-    }
 
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        clauseAsString( builder, "DELETE", expressions, "," );
+  def order(order: Order.Value): OrderByExpression = {
+    return new OrderByExpression(expression, order)
+  }
+
+  def asString(builder: StringBuilder) {
+    expression.asString(builder)
+
+    order match {
+      case Order.ASCENDING =>
+        builder.append(' ').append("ASCENDING")
+      case Order.DESCENDING =>
+        builder.append(' ').append("DESCENDING")
+      case _ =>
     }
+  }
+
+  @throws(classOf[CloneNotSupportedException])
+  override def clone: AnyRef = {
+    return super.clone
+  }
 }

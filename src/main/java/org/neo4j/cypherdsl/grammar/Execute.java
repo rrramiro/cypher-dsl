@@ -19,10 +19,10 @@
  */
 package org.neo4j.cypherdsl.grammar;
 
-import java.util.Map;
-
 import org.neo4j.cypherdsl.AsString;
 import org.neo4j.cypherdsl.query.Query;
+
+import java.util.Map;
 
 /**
  * Once the query has been constructed, the methods here can be used to either stringify it or extract the

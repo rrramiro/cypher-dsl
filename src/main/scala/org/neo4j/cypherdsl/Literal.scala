@@ -17,32 +17,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.neo4j.cypherdsl
 
-package org.neo4j.cypherdsl.query.clause;
-
-import org.neo4j.cypherdsl.expression.ReferenceExpression;
-
-import java.util.ArrayList;
+import org.neo4j.cypherdsl.query.AbstractExpression
+import org.neo4j.cypherdsl.query.Value
+import java.lang.StringBuilder
 
 /**
- * CREATE clause
+ * Represents a literal value, such as a string or number.
  */
-public class DeleteClause
-        extends Clause
-{
-    private final ArrayList<ReferenceExpression> expressions = new ArrayList<ReferenceExpression>();
+object Literal {
 
-    public DeleteClause( Iterable<ReferenceExpression> expressions )
-    {
-        for ( ReferenceExpression expression : expressions )
-        {
-            this.expressions.add( expression );
-        }
+  private class LiteralExpression(value: AnyRef) extends AbstractExpression {
+
+    def asString(builder: StringBuilder) {
+      if (value.isInstanceOf[String]) {
+        builder.append("\"").append(value.toString.replace("\\", "\\\\").replace("\"", "\\\"")).append("\"")
+      }
+      else {
+        builder.append(value.toString)
+      }
     }
 
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        clauseAsString( builder, "DELETE", expressions, "," );
+    override def toString: String = {
+      return value.toString
     }
+  }
+
 }
+
+private[cypherdsl] class Literal(value: AnyRef) extends Value(new Literal.LiteralExpression(value))

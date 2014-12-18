@@ -17,32 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.neo4j.cypherdsl
 
-package org.neo4j.cypherdsl.query.clause;
+import java.lang.StringBuilder
 
-import org.neo4j.cypherdsl.expression.ReferenceExpression;
-
-import java.util.ArrayList;
-
+import org.neo4j.cypherdsl.expression.Expression
 /**
- * CREATE clause
+ * Represents a property being assigned to a value. This is used for the SET clause.
  */
-public class DeleteClause
-        extends Clause
-{
-    private final ArrayList<ReferenceExpression> expressions = new ArrayList<ReferenceExpression>();
+private[cypherdsl] class SetProperty(val property: Property, val value: Expression) extends AsString {
 
-    public DeleteClause( Iterable<ReferenceExpression> expressions )
-    {
-        for ( ReferenceExpression expression : expressions )
-        {
-            this.expressions.add( expression );
-        }
-    }
-
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        clauseAsString( builder, "DELETE", expressions, "," );
-    }
+  def asString(builder: StringBuilder) {
+    property.asString(builder)
+    builder.append('=')
+    value.asString(builder)
+  }
 }

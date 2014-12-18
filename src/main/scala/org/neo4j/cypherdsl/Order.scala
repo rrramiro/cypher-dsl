@@ -17,32 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.neo4j.cypherdsl.query.clause;
-
-import org.neo4j.cypherdsl.expression.ReferenceExpression;
-
-import java.util.ArrayList;
+package org.neo4j.cypherdsl
 
 /**
- * CREATE clause
+ * Order enumeration for use with the ORDER BY clause
  */
-public class DeleteClause
-        extends Clause
-{
-    private final ArrayList<ReferenceExpression> expressions = new ArrayList<ReferenceExpression>();
-
-    public DeleteClause( Iterable<ReferenceExpression> expressions )
-    {
-        for ( ReferenceExpression expression : expressions )
-        {
-            this.expressions.add( expression );
-        }
-    }
-
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        clauseAsString( builder, "DELETE", expressions, "," );
-    }
+object Order extends Enumeration {
+  type Order = Value
+  val ASCENDING, DESCENDING = Value
 }
+

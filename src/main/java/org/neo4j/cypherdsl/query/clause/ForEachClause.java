@@ -19,10 +19,6 @@
  */
 package org.neo4j.cypherdsl.query.clause;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.neo4j.cypherdsl.AsString;
 import org.neo4j.cypherdsl.Identifier;
 import org.neo4j.cypherdsl.SetProperty;
@@ -31,6 +27,10 @@ import org.neo4j.cypherdsl.expression.PathExpression;
 import org.neo4j.cypherdsl.expression.ReferenceExpression;
 import org.neo4j.cypherdsl.grammar.ForEachStatement;
 import org.neo4j.cypherdsl.grammar.ForEachStatements;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * FOR EACH clause

@@ -17,32 +17,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.neo4j.cypherdsl.query
 
-package org.neo4j.cypherdsl.query.clause;
-
-import org.neo4j.cypherdsl.expression.ReferenceExpression;
-
-import java.util.ArrayList;
+import org.neo4j.cypherdsl.expression.Expression
+import java.lang.StringBuilder
 
 /**
- * CREATE clause
+ * Collections many expressions into a list
  */
-public class DeleteClause
-        extends Clause
-{
-    private final ArrayList<ReferenceExpression> expressions = new ArrayList<ReferenceExpression>();
+class Expressions(expressions: Seq[Expression], separator: String = ",") extends AbstractExpression {
 
-    public DeleteClause( Iterable<ReferenceExpression> expressions )
+  def asString(builder: StringBuilder) {
     {
-        for ( ReferenceExpression expression : expressions )
+      var i: Int = 0
+      while (i < expressions.length) {
         {
-            this.expressions.add( expression );
+          val expression: Expression = expressions(i)
+          if (i > 0) {
+            builder.append(separator)
+          }
+          expression.asString(builder)
         }
+        ({
+          i += 1; i - 1
+        })
+      }
     }
-
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        clauseAsString( builder, "DELETE", expressions, "," );
-    }
+  }
 }

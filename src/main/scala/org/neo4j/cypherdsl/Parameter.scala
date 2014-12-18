@@ -17,32 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.neo4j.cypherdsl
 
-package org.neo4j.cypherdsl.query.clause;
-
-import org.neo4j.cypherdsl.expression.ReferenceExpression;
-
-import java.util.ArrayList;
+import org.neo4j.cypherdsl.query.AbstractExpression
+import org.neo4j.cypherdsl.query.Value
+import java.lang.StringBuilder
 
 /**
- * CREATE clause
+ * Represents a parameter in a query.
  */
-public class DeleteClause
-        extends Clause
-{
-    private final ArrayList<ReferenceExpression> expressions = new ArrayList<ReferenceExpression>();
+object Parameter {
 
-    public DeleteClause( Iterable<ReferenceExpression> expressions )
-    {
-        for ( ReferenceExpression expression : expressions )
-        {
-            this.expressions.add( expression );
-        }
-    }
+  private class ParameterExpression(name: String) extends AbstractExpression {
 
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        clauseAsString( builder, "DELETE", expressions, "," );
+    def asString(builder: StringBuilder) {
+      builder.append('{').append(name).append('}')
     }
+  }
+
+}
+
+private[cypherdsl] class Parameter(name: String) extends Value(new Parameter.ParameterExpression(name)) {
 }
