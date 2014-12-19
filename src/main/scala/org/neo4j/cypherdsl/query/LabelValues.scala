@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2002-2013 "Neo Technology,"
+ * Copyright (c) 2002-2014 "Neo Technology,"
  * Network Engine for Objects in Lund AB [http://neotechnology.com]
  *
  * This file is part of Neo4j.
@@ -17,32 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query;
-
-import org.neo4j.cypherdsl.Identifier;
-import org.neo4j.cypherdsl.expression.PathExpression;
-
+package org.neo4j.cypherdsl.query
+import java.lang.StringBuilder
+//import java.lang.Iterable
+import scala.collection.JavaConversions._
 /**
- * Represents a named path.
+ * Represents a collection of Label
  */
-public class NamedPath
-        extends AbstractExpression
-        implements PathExpression
-{
-    private final Identifier identifier;
-    private final PathExpression path;
+class LabelValues(labels: Iterable[LabelValue]) extends AbstractExpression {
 
-    public NamedPath( Identifier identifier, PathExpression path )
-    {
-        this.identifier = identifier;
-        this.path = path;
-    }
+  def asString(builder: StringBuilder) {
 
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        identifier.asString( builder );
-        builder.append( '=' );
-        path.asString( builder );
+    for (label <- labels) {
+      label.asString(builder)
     }
+  }
 }

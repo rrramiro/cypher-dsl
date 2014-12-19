@@ -81,7 +81,7 @@ class ProjectionTest extends GraphHolder {
     }
 
     {
-      val projection: Projection[Friend] = new Projection[Friend](classOf[Friend])
+      val projection: Projection[Friend] = Projection[Friend](classOf[Friend])
       val friends: Iterable[Friend] = projection.iterable(engine.execute(start(nodeById("john", john)).`match`(node("john").out("friend").node.out("friend").node("fof")).returns(as(identifier("john").property("name"), "name"), as(identifier("fof").property("name"), "friend")).toString))
       System.out.println(friends)
     }

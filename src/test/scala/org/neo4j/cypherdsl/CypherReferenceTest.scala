@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl
 
 import org.junit.Assert.assertEquals
 import org.neo4j.cypherdsl.CypherQuery._
+import org.neo4j.cypherdsl.CypherQuery.{query => cypherQuery}
 import org.neo4j.cypherdsl.Order.DESCENDING
 import java.util.Arrays
 import java.util.HashMap
@@ -58,7 +59,7 @@ class CypherReferenceTest extends AbstractCypherTest {
   }
 
   @Test def test16_9_7 {
-    assertQueryEquals(CYPHER + "START n=node:nodes(\"name:A\") RETURN n", start(query("n", "nodes", "name:A")).returns(identifier("n")).toString)
+    assertQueryEquals(CYPHER + "START n=node:nodes(\"name:A\") RETURN n", start(cypherQuery("n", "nodes", "name:A")).returns(identifier("n")).toString)
   }
 
   @Test def test16_9_7_1 {
@@ -98,15 +99,15 @@ class CypherReferenceTest extends AbstractCypherTest {
   }
 
   @Test def test16_10_9 {
-    assertQueryEquals(CYPHER + "START a=node(3) MATCH (a)-[:KNOWS]->(b)-[:KNOWS]->(c) RETURN a,b,c", start(nodesById("a", 3)).`match`(node("a").out("KNOWS").node("b").out("KNOWS").node("c")).returns(identifiers("a", "b", "c")).toString)
+    assertQueryEquals(CYPHER + "START a=node(3) MATCH (a)-[:KNOWS]->(b)-[:KNOWS]->(c) RETURN a,b,c", start(nodesById("a", 3)).`match`(node("a").out("KNOWS").node("b").out("KNOWS").node("c")).returns(identifiers("a", "b", "c"): _*).toString)
   }
 
   @Test def test16_10_10 {
-    assertQueryEquals(CYPHER + "START a=node(3),x=node(2,4) MATCH (a)-[:KNOWS*1..3]->(x) RETURN a,x", start(nodesById("a", 3), nodesById("x", 2, 4)).`match`(node("a").out("KNOWS").hops(1, 3).node("x")).returns(identifiers("a", "x")).toString)
+    assertQueryEquals(CYPHER + "START a=node(3),x=node(2,4) MATCH (a)-[:KNOWS*1..3]->(x) RETURN a,x", start(nodesById("a", 3), nodesById("x", 2, 4)).`match`(node("a").out("KNOWS").hops(1, 3).node("x")).returns(identifiers("a", "x"): _*).toString)
   }
 
   @Test def test16_10_11 {
-    assertQueryEquals(CYPHER + "START a=node(3),x=node(2,4) MATCH (a)-[r:KNOWS*1..3]->(x) RETURN r", start(nodesById("a", 3), nodesById("x", 2, 4)).`match`(node("a").out("KNOWS").hops(1, 3).as("r").node("x")).returns(identifiers("r")).toString)
+    assertQueryEquals(CYPHER + "START a=node(3),x=node(2,4) MATCH (a)-[r:KNOWS*1..3]->(x) RETURN r", start(nodesById("a", 3), nodesById("x", 2, 4)).`match`(node("a").out("KNOWS").hops(1, 3).as("r").node("x")).returns(identifiers("r"): _*).toString)
   }
 
   @Test def test16_10_12 {
@@ -114,7 +115,7 @@ class CypherReferenceTest extends AbstractCypherTest {
   }
 
   @Test def test16_10_13 {
-    assertQueryEquals(CYPHER + "START a=node(2) OPTIONAL MATCH (a)-->(x) RETURN a,x", start(nodesById("a", 2)).`match`(node("a").out.node("x")).optional.returns(identifiers("a", "x")).toString)
+    assertQueryEquals(CYPHER + "START a=node(2) OPTIONAL MATCH (a)-->(x) RETURN a,x", start(nodesById("a", 2)).`match`(node("a").out.node("x")).optional.returns(identifiers("a", "x"): _*).toString)
   }
 
   @Test def test16_10_14 {
@@ -126,7 +127,7 @@ class CypherReferenceTest extends AbstractCypherTest {
   }
 
   @Test def test16_10_16 {
-    assertQueryEquals(CYPHER + "START a=node(3) MATCH (a)-[:KNOWS]->(b)-[:KNOWS]->(c)," + "(a)-[:BLOCKS]-(d)-[:KNOWS]-(c) RETURN a,b,c,d", start(nodesById("a", 3)).`match`(node("a").out("KNOWS").node("b").out("KNOWS").node("c"), node("a").both("BLOCKS").node("d").both("KNOWS").node("c")).returns(identifiers("a", "b", "c", "d")).toString)
+    assertQueryEquals(CYPHER + "START a=node(3) MATCH (a)-[:KNOWS]->(b)-[:KNOWS]->(c)," + "(a)-[:BLOCKS]-(d)-[:KNOWS]-(c) RETURN a,b,c,d", start(nodesById("a", 3)).`match`(node("a").out("KNOWS").node("b").out("KNOWS").node("c"), node("a").both("BLOCKS").node("d").both("KNOWS").node("c")).returns(identifiers("a", "b", "c", "d"): _*).toString)
   }
 
   @Test def test16_10_17 {

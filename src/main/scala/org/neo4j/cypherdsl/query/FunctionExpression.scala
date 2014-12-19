@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2002-2014 "Neo Technology,"
+ * Copyright (c) 2002-2013 "Neo Technology,"
  * Network Engine for Objects in Lund AB [http://neotechnology.com]
  *
  * This file is part of Neo4j.
@@ -17,25 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query;
+package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.Identifier;
-
+import org.neo4j.cypherdsl.expression.Expression
+import java.lang.StringBuilder
 /**
- * Represents matching a label to a value
+ * Expresses all functions of the form "f(exp)"
  */
-public class LabelValue extends AbstractExpression {
+class FunctionExpression(name: String, expression: Expression) extends AbstractExpression {
 
-	private final Identifier label;
 
-	public LabelValue( Identifier label ) {
-		this.label = label;
-	}
-
-	@Override
-	public void asString( StringBuilder builder ) {
-        builder.append( ":" );
-		label.asString( builder );
-	}
-
+  def asString(builder: StringBuilder) {
+    builder.append(name).append('(')
+    expression.asString(builder)
+    builder.append(')')
+  }
 }

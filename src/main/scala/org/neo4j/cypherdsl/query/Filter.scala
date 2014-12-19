@@ -17,33 +17,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl
+package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.query.AbstractExpression
-import org.neo4j.cypherdsl.query.Value
+import org.neo4j.cypherdsl.Identifier
+import org.neo4j.cypherdsl.expression.BooleanExpression
+import org.neo4j.cypherdsl.expression.CollectionExpression
 import java.lang.StringBuilder
-
 /**
- * Represents a literal value, such as a string or number.
+ * Represents a filter function
  */
-object Literal {
+class Filter(name: Identifier, iterable: CollectionExpression, predicate: BooleanExpression) extends AbstractExpression {
 
-  private class LiteralExpression[B](value: B) extends AbstractExpression {
-
-    def asString(builder: StringBuilder) {
-      if (value.isInstanceOf[String]) {
-        builder.append("\"").append(value.toString.replace("\\", "\\\\").replace("\"", "\\\"")).append("\"")
-      }
-      else {
-        builder.append(value.toString)
-      }
-    }
-
-    override def toString: String = {
-      return value.toString
-    }
+  def asString(builder: StringBuilder) {
+    builder.append("filter").append('(')
+    name.asString(builder)
+    builder.append(" IN ")
+    iterable.asString(builder)
+    builder.append(" WHERE ")
+    predicate.asString(builder)
+    builder.append(')')
   }
-
 }
-
-private[cypherdsl] class Literal[A](value: A) extends Value(new Literal.LiteralExpression(value))

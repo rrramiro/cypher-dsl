@@ -17,15 +17,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.neo4j.cypherdsl.query;
-
+package org.neo4j.cypherdsl.query
+import java.lang.StringBuilder
+import scala.collection.JavaConversions._
 /**
- * The direction of a path expression.
+ * Represents a collection of PropertyValue
  */
-public enum Direction
-{
-    BOTH,
-    OUT,
-    IN
+class PropertyValues(propertyValues: Iterable[PropertyValue]) extends AbstractExpression {
+
+
+  def asString(builder: StringBuilder) {
+    builder.append("{")
+    var comma: String = ""
+
+    for (propertyValue <- propertyValues) {
+      builder.append(comma)
+      propertyValue.asString(builder)
+      comma = ","
+    }
+    builder.append('}')
+  }
 }

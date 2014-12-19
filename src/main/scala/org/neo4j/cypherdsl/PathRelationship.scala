@@ -32,7 +32,7 @@ import scala.language.implicitConversions
 /**
  * Represents a relationship in a path.
  */
-class PathRelationship(leftNode: Path, direction: Direction, as: Identifier, relationships: Iterable[Identifier], relationshipPropertyValues: PropertyValues, minHops: Integer, maxHops: Integer) extends AsString with Serializable with Cloneable {
+class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifier, relationships: Iterable[Identifier], relationshipPropertyValues: PropertyValues, minHops: Integer, maxHops: Integer) extends AsString with Serializable with Cloneable {
 
   /**
    * If this relationship is used in a CREATE or CREATE UNIQUE clause,

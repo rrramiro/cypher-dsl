@@ -17,31 +17,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.neo4j.cypherdsl.query
 
-package org.neo4j.cypherdsl.query;
-
-import org.neo4j.cypherdsl.expression.Expression;
-
+import org.neo4j.cypherdsl.Identifier
+import org.neo4j.cypherdsl.expression.BooleanExpression
+import org.neo4j.cypherdsl.expression.CollectionExpression
+import java.lang.StringBuilder
 /**
- * Expresses all functions of the form "f(exp)"
+ * Iterable predicates are of the form: function(name IN iterable WHERE predicate)
  */
-public class FunctionExpression
-        extends AbstractExpression
-{
-    public final String name;
-    public final Expression expression;
+class IterablePredicateExpression(function: String, name: Identifier, iterable: CollectionExpression, predicate: BooleanExpression) extends AbstractExpression {
 
-    public FunctionExpression( String name, Expression expression )
-    {
-        this.name = name;
-        this.expression = expression;
-    }
-
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        builder.append( name ).append( '(' );
-        expression.asString( builder );
-        builder.append( ')' );
-    }
+  def asString(builder: StringBuilder) {
+    builder.append(function).append('(')
+    name.asString(builder)
+    builder.append(" IN ")
+    iterable.asString(builder)
+    builder.append(" WHERE ")
+    predicate.asString(builder)
+    builder.append(')')
+  }
 }

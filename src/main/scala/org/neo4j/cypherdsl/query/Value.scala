@@ -27,20 +27,16 @@ import java.lang.StringBuilder
  * Handles a single value that corresponds to any expression. Optionally
  * can be a part of binary operation.
  */
-object Value{
-  def apply(operator: Operator, value: Expression) = {
+
+class Value(val value: Expression) extends AbstractExpression with ScalarExpression with NumericExpression with StringExpression with BooleanExpression with NodeExpression with RelationshipExpression with PathExpression with CollectionExpression {
+  var operator: Operator = null
+  Query.checkNull(value, "Value")
+
+  def this(operatorParam: Operator, value: Expression) = {
+    this(value)
     Query.checkNull(operator, "Operator")
-    Query.checkNull(value, "Value")
-    new Value(operator, value)
+    this.operator = operatorParam
   }
-
-  def apply(value: Expression) = {
-    Query.checkNull(value, "Value")
-    new Value(null, value)
-  }
-}
-
-case class Value(operator: Operator, value: Expression) extends AbstractExpression with ScalarExpression with NumericExpression with StringExpression with BooleanExpression with NodeExpression with RelationshipExpression with PathExpression with CollectionExpression {
 
   def add(expression: Number): NumericExpression = {
     Query.checkNull(expression, "Expression")

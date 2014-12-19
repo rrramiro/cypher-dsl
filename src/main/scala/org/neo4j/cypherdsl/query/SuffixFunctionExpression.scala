@@ -17,33 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.neo4j.cypherdsl.query
 
-package org.neo4j.cypherdsl.query;
-
-import org.neo4j.cypherdsl.AsString;
-import org.neo4j.cypherdsl.Identifier;
-import org.neo4j.cypherdsl.expression.Expression;
+import org.neo4j.cypherdsl.expression.Expression
+import java.lang.StringBuilder
 
 /**
- * Represents matching a property to a value
+ * Expresses all functions of the form "exp f", such as "exp is null"
  */
-public class PropertyValue
-        implements AsString
-{
-    private final Identifier id;
-    private final Expression value;
+class SuffixFunctionExpression(name: String, expression: Expression) extends AbstractExpression {
 
-    public PropertyValue( Identifier id, Expression value )
-    {
-        this.id = id;
-        this.value = value;
-    }
-
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        id.asString( builder );
-        builder.append( ':' );
-        value.asString( builder );
-    }
+  def asString(builder: StringBuilder) {
+    expression.asString(builder)
+    builder.append(name)
+  }
 }

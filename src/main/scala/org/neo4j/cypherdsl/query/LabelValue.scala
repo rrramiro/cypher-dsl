@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2002-2013 "Neo Technology,"
+ * Copyright (c) 2002-2014 "Neo Technology,"
  * Network Engine for Objects in Lund AB [http://neotechnology.com]
  *
  * This file is part of Neo4j.
@@ -17,33 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl
+package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.query.AbstractExpression
-import org.neo4j.cypherdsl.query.Value
+import org.neo4j.cypherdsl.Identifier
 import java.lang.StringBuilder
-
 /**
- * Represents a literal value, such as a string or number.
+ * Represents matching a label to a value
  */
-object Literal {
+class LabelValue(label: Identifier) extends AbstractExpression {
 
-  private class LiteralExpression[B](value: B) extends AbstractExpression {
-
-    def asString(builder: StringBuilder) {
-      if (value.isInstanceOf[String]) {
-        builder.append("\"").append(value.toString.replace("\\", "\\\\").replace("\"", "\\\"")).append("\"")
-      }
-      else {
-        builder.append(value.toString)
-      }
-    }
-
-    override def toString: String = {
-      return value.toString
-    }
+  def asString(builder: StringBuilder) {
+    builder.append(":")
+    label.asString(builder)
   }
-
 }
-
-private[cypherdsl] class Literal[A](value: A) extends Value(new Literal.LiteralExpression(value))

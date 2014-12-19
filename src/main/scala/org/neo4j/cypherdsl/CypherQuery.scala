@@ -61,16 +61,16 @@ object CypherQuery {
     new CypherQuery(new Query())
   }
 
-//  def apply(q: Query): CypherQuery = {
-//    try {
-//      new CypherQuery(q.clone().asInstanceOf[Query])
-//    }
-//    catch {
-//      case e: CloneNotSupportedException => {
-//        throw new IllegalStateException("Query was not cloneable")
-//      }
-//    }
-//  }
+  //  def apply(q: Query): CypherQuery = {
+  //    try {
+  //      new CypherQuery(q.clone().asInstanceOf[Query])
+  //    }
+  //    catch {
+  //      case e: CloneNotSupportedException => {
+  //        throw new IllegalStateException("Query was not cloneable")
+  //      }
+  //    }
+  //  }
 
   /**
    * Start building a new Cypher query, starting with a START clause
@@ -188,29 +188,29 @@ object CypherQuery {
     return new Literal(value)
   }
 
+    /**
+     * Declare a literal boolean value, such as true or false.
+     *
+     * @param value literal value
+     * @return Literal instance
+     */
+    def literal(value: Boolean): BooleanExpression = {
+      return new Literal(value)
+    }
+
 //  /**
-//   * Declare a literal boolean value, such as true or false.
+//   * Declare a literal value using an untyped object.
+//   * <p/>
+//   * If a string is passed in, then output will
+//   * be quoted appropriately.
 //   *
 //   * @param value literal value
 //   * @return Literal instance
 //   */
-//  def literal(value: Boolean): BooleanExpression = {
+//  def literal(value: AnyRef): ScalarExpression = {
+//    checkNull(value, "Value")
 //    return new Literal(value)
 //  }
-
-  /**
-   * Declare a literal value using an untyped object.
-   * <p/>
-   * If a string is passed in, then output will
-   * be quoted appropriately.
-   *
-   * @param value literal value
-   * @return Literal instance
-   */
-  def literal(value: AnyRef): ScalarExpression = {
-    checkNull(value, "Value")
-    return new Literal(value)
-  }
 
   /**
    * Declare an identifier. This is used to
@@ -240,13 +240,13 @@ object CypherQuery {
    * @return
    */
   def collection(values: AnyRef*): CollectionExpression = {
-    Value(new ExpressionCollection(new Expressions(values.map {
+    new Value(new ExpressionCollection(new Expressions(values.map {
       case expression: Expression =>
         expression
       case number: Number =>
         literal(number)
       case other =>
-        literal(other)
+        literal(other.toString)
     })))
   }
 
@@ -256,9 +256,9 @@ object CypherQuery {
    * @param values
    * @return
    */
-  def identifiers(values: String*): Array[Identifier] = values.map {
+  def identifiers(values: String*) = values.map {
     identifier
-  }.toArray
+  }
 
   /**
    * Declare a list of parameters.
@@ -286,11 +286,35 @@ object CypherQuery {
    * properties in the CREATE or CREATE UNIQUE clauses.
    *
    * @param id
-   * @param value
+   * @param valueParam
    * @return
    */
-  def value(id: String, value: AnyRef): PropertyValue = {
-    return new PropertyValue(identifier(id), literal(value))
+  def value(id: String, valueParam: Number): PropertyValue = {
+    return new PropertyValue(identifier(id), literal(valueParam))
+  }
+
+  /**
+   * Declare a value, which can be used for setting or matching
+   * properties in the CREATE or CREATE UNIQUE clauses.
+   *
+   * @param id
+   * @param valueParam
+   * @return
+   */
+  def value(id: String, valueParam: String): PropertyValue = {
+    return new PropertyValue(identifier(id), literal(valueParam))
+  }
+
+  /**
+   * Declare a value, which can be used for setting or matching
+   * properties in the CREATE or CREATE UNIQUE clauses.
+   *
+   * @param id
+   * @param valueParam
+   * @return
+   */
+  def value(id: String, valueParam: Boolean): PropertyValue = {
+    return new PropertyValue(identifier(id), literal(valueParam.toString))
   }
 
   /**
@@ -352,7 +376,7 @@ object CypherQuery {
    */
   def not(expression: BooleanExpression): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return Value(new FunctionExpression("not", expression))
+    return new Value(new FunctionExpression("not", expression))
   }
 
   /**
@@ -365,7 +389,7 @@ object CypherQuery {
    * @return
    */
   def has(property: Property): BooleanExpression = {
-    return Value(new FunctionExpression("has", property))
+    return new Value(new FunctionExpression("has", property))
   }
 
   /**
@@ -378,7 +402,7 @@ object CypherQuery {
    * @return
    */
   def has(expression: Expression): BooleanExpression = {
-    return Value(new FunctionExpression("has", expression))
+    return new Value(new FunctionExpression("has", expression))
   }
 
   /**
@@ -391,7 +415,7 @@ object CypherQuery {
    * @return
    */
   def isNull(expression: Expression): BooleanExpression = {
-    return Value(new SuffixFunctionExpression(" is null", expression))
+    return new Value(new SuffixFunctionExpression(" is null", expression))
   }
 
   /**
@@ -404,7 +428,7 @@ object CypherQuery {
    * @return
    */
   def isNotNull(expression: Expression): BooleanExpression = {
-    return Value(new SuffixFunctionExpression(" is not null", expression))
+    return new Value(new SuffixFunctionExpression(" is not null", expression))
   }
 
   /**
@@ -788,7 +812,7 @@ object CypherQuery {
    */
   def shortestPath(path: PathExpression): PathExpression = {
     Query.checkNull(path, "Path")
-    return Value(new FunctionExpression("shortestPath", path))
+    return new Value(new FunctionExpression("shortestPath", path))
   }
 
   /**
@@ -804,7 +828,7 @@ object CypherQuery {
    */
   def allShortestPaths(path: PathExpression): PathExpression = {
     Query.checkNull(path, "Path")
-    return Value(new FunctionExpression("allShortestPaths", path))
+    return new Value(new FunctionExpression("allShortestPaths", path))
   }
 
   /**
@@ -820,7 +844,7 @@ object CypherQuery {
    * @return
    */
   def as(expression: Expression, name: String): Expression = {
-    return Value(new Operator(expression, " AS "), identifier(name))
+    return new Value(new Operator(expression, " AS "), identifier(name))
   }
 
   /**
@@ -836,7 +860,7 @@ object CypherQuery {
    * @return
    */
   def as(expression: Expression, name: Identifier): Expression = {
-    return Value(new Operator(expression, " AS "), name)
+    return new Value(new Operator(expression, " AS "), name)
   }
 
   /**
@@ -851,7 +875,7 @@ object CypherQuery {
    * @return
    */
   def distinct(expression: Expression): Expression = {
-    return Value(new Operator("DISTINCT "), expression)
+    return new Value(new Operator("DISTINCT "), expression)
   }
 
   /**
@@ -860,7 +884,7 @@ object CypherQuery {
    * @return
    */
   def count: NumericExpression = {
-    Value(new FunctionExpression("count", new AbstractExpression() {
+    new Value(new FunctionExpression("count", new AbstractExpression() {
       override def asString(builder: StringBuilder): Unit = builder.append('*')
     }))
   }
@@ -872,7 +896,7 @@ object CypherQuery {
    */
   def count(expression: Expression): NumericExpression = {
     checkNull(expression, "Expression")
-    return Value(new FunctionExpression("count", expression))
+    return new Value(new FunctionExpression("count", expression))
   }
 
   /**
@@ -889,7 +913,7 @@ object CypherQuery {
    */
   def sum(expression: NumericExpression): NumericExpression = {
     checkNull(expression, "Expression")
-    return Value(new FunctionExpression("sum", expression))
+    return new Value(new FunctionExpression("sum", expression))
   }
 
   /**
@@ -899,7 +923,7 @@ object CypherQuery {
    */
   def avg(expression: Expression): NumericExpression = {
     checkNull(expression, "Expression")
-    return Value(new FunctionExpression("avg", expression))
+    return new Value(new FunctionExpression("avg", expression))
   }
 
   /**
@@ -909,7 +933,7 @@ object CypherQuery {
    */
   def max(expression: NumericExpression): NumericExpression = {
     checkNull(expression, "Expression")
-    return Value(new FunctionExpression("max", expression))
+    return new Value(new FunctionExpression("max", expression))
   }
 
   /**
@@ -919,7 +943,7 @@ object CypherQuery {
    */
   def min(expression: NumericExpression): NumericExpression = {
     checkNull(expression, "Expression")
-    return Value(new FunctionExpression("min", expression))
+    return new Value(new FunctionExpression("min", expression))
   }
 
   /**
@@ -929,7 +953,7 @@ object CypherQuery {
    */
   def collect(expression: ScalarExpression): CollectionExpression = {
     checkNull(expression, "Expression")
-    return Value(new FunctionExpression("collect", expression))
+    return new Value(new FunctionExpression("collect", expression))
   }
 
   /**
@@ -1031,7 +1055,7 @@ object CypherQuery {
     Query.checkNull(name, "Name")
     Query.checkNull(iterable, "Iterable")
     Query.checkNull(predicateExpression, "Predicate")
-    return Value(new IterablePredicateExpression("all", name, iterable, predicateExpression))
+    return new Value(new IterablePredicateExpression("all", name, iterable, predicateExpression))
   }
 
   /**
@@ -1064,7 +1088,7 @@ object CypherQuery {
     Query.checkNull(name, "Name")
     Query.checkNull(iterable, "Iterable")
     Query.checkNull(predicateExpression, "Predicate")
-    return Value(new IterablePredicateExpression("any", name, iterable, predicateExpression))
+    return new Value(new IterablePredicateExpression("any", name, iterable, predicateExpression))
   }
 
   /**
@@ -1097,7 +1121,7 @@ object CypherQuery {
     Query.checkNull(name, "Name")
     Query.checkNull(iterable, "Iterable")
     Query.checkNull(predicateExpression, "Predicate")
-    return Value(new IterablePredicateExpression("none", name, iterable, predicateExpression))
+    return new Value(new IterablePredicateExpression("none", name, iterable, predicateExpression))
   }
 
   /**
@@ -1130,7 +1154,7 @@ object CypherQuery {
     Query.checkNull(name, "Name")
     Query.checkNull(iterable, "Iterable")
     Query.checkNull(predicateExpression, "Predicate")
-    return Value(new IterablePredicateExpression("single", name, iterable, predicateExpression))
+    return new Value(new IterablePredicateExpression("single", name, iterable, predicateExpression))
   }
 
   /**
@@ -1144,7 +1168,7 @@ object CypherQuery {
    */
   def length(expression: CollectionExpression): NumericExpression = {
     checkNull(expression, "Expression")
-    return Value(new FunctionExpression("length", expression))
+    return new Value(new FunctionExpression("length", expression))
   }
 
   /**
@@ -1158,7 +1182,7 @@ object CypherQuery {
    */
   def `type`(relationshipExpression: RelationshipExpression): StringExpression = {
     checkNull(relationshipExpression, "Expression")
-    return Value(new FunctionExpression("type", relationshipExpression))
+    return new Value(new FunctionExpression("type", relationshipExpression))
   }
 
   /**
@@ -1172,7 +1196,7 @@ object CypherQuery {
    */
   def id(name: String): NumericExpression = {
     checkNull(name, "Name")
-    return Value(new FunctionExpression("id", identifier(name)))
+    return new Value(new FunctionExpression("id", identifier(name)))
   }
 
   /**
@@ -1186,7 +1210,7 @@ object CypherQuery {
    */
   def id(propertyContainerExpression: PropertyContainerExpression): NumericExpression = {
     checkNull(propertyContainerExpression, "Expression")
-    return Value(new FunctionExpression("id", propertyContainerExpression))
+    return new Value(new FunctionExpression("id", propertyContainerExpression))
   }
 
   /**
@@ -1202,7 +1226,7 @@ object CypherQuery {
     if (expressions.length < 1) {
       throw new IllegalArgumentException("At least one expression must be provided to coalesce function")
     }
-    return Value(new FunctionExpression("coalesce", new Expressions(expressions)))
+    return new Value(new FunctionExpression("coalesce", new Expressions(expressions)))
   }
 
   /**
@@ -1216,7 +1240,7 @@ object CypherQuery {
    */
   def head(collectionExpression: CollectionExpression): Expression = {
     checkNull(collectionExpression, "Expression")
-    return Value(new FunctionExpression("head", collectionExpression))
+    return new Value(new FunctionExpression("head", collectionExpression))
   }
 
   /**
@@ -1230,7 +1254,7 @@ object CypherQuery {
    */
   def last(collectionExpression: CollectionExpression): Expression = {
     checkNull(collectionExpression, "Expression")
-    return Value(new FunctionExpression("last", collectionExpression))
+    return new Value(new FunctionExpression("last", collectionExpression))
   }
 
   /**
@@ -1244,7 +1268,7 @@ object CypherQuery {
    */
   def nodes(pathExpression: PathExpression): CollectionExpression = {
     checkNull(pathExpression, "Expression")
-    return Value(new FunctionExpression("nodes", pathExpression))
+    return new Value(new FunctionExpression("nodes", pathExpression))
   }
 
   /**
@@ -1258,7 +1282,7 @@ object CypherQuery {
    */
   def relationships(pathExpression: PathExpression): CollectionExpression = {
     checkNull(pathExpression, "Expression")
-    return Value(new FunctionExpression("relationships", pathExpression))
+    return new Value(new FunctionExpression("relationships", pathExpression))
   }
 
   /**
@@ -1272,7 +1296,7 @@ object CypherQuery {
    */
   def labels(nodeExpression: NodeExpression): CollectionExpression = {
     checkNull(nodeExpression, "Expression")
-    return Value(new FunctionExpression("labels", nodeExpression))
+    return new Value(new FunctionExpression("labels", nodeExpression))
   }
 
   /**
@@ -1303,7 +1327,7 @@ object CypherQuery {
     Query.checkNull(name, "Name")
     Query.checkNull(iterable, "Iterable")
     Query.checkNull(expression, "Expression")
-    return Value(new Extract(name, iterable, expression))
+    return new Value(new Extract(name, iterable, expression))
   }
 
   /**
@@ -1334,7 +1358,7 @@ object CypherQuery {
     Query.checkNull(name, "Name")
     Query.checkNull(iterable, "Iterable")
     Query.checkNull(predicateExpression, "Predicate")
-    return Value(new Filter(name, iterable, predicateExpression))
+    return new Value(new Filter(name, iterable, predicateExpression))
   }
 
   /**
@@ -1348,7 +1372,7 @@ object CypherQuery {
    */
   def tail(collectionExpression: CollectionExpression): CollectionExpression = {
     checkNull(collectionExpression, "Expression")
-    return Value(new FunctionExpression("tail", collectionExpression))
+    return new Value(new FunctionExpression("tail", collectionExpression))
   }
 
   /**
@@ -1407,10 +1431,10 @@ object CypherQuery {
    */
   def range(start: NumericExpression, end: NumericExpression, step: NumericExpression): CollectionExpression = {
     if (step == null) {
-      return Value(new FunctionExpression("range", new Expressions(Array[Expression](start, end))))
+      return new Value(new FunctionExpression("range", new Expressions(Array[Expression](start, end))))
     }
     else {
-      return Value(new FunctionExpression("range", new Expressions(Array[Expression](start, end, step))))
+      return new Value(new FunctionExpression("range", new Expressions(Array[Expression](start, end, step))))
     }
   }
 
@@ -1423,7 +1447,7 @@ object CypherQuery {
    * </pre>
    */
   def p(numericExpression: NumericExpression): NumericExpression = {
-    return Value(new FunctionExpression("", numericExpression))
+    return new Value(new FunctionExpression("", numericExpression))
   }
 
   /**
@@ -1449,7 +1473,7 @@ object CypherQuery {
    * @return
    */
   def abs(numericalExpression: NumericExpression): NumericExpression = {
-    return Value(new FunctionExpression("abs", numericalExpression))
+    return new Value(new FunctionExpression("abs", numericalExpression))
   }
 
   /**
@@ -1475,7 +1499,7 @@ object CypherQuery {
    * @return
    */
   def round(numericalExpression: NumericExpression): NumericExpression = {
-    return Value(new FunctionExpression("round", numericalExpression))
+    return new Value(new FunctionExpression("round", numericalExpression))
   }
 
   /**
@@ -1501,7 +1525,7 @@ object CypherQuery {
    * @return
    */
   def sqrt(numericalExpression: NumericExpression): NumericExpression = {
-    return Value(new FunctionExpression("sqrt", numericalExpression))
+    return new Value(new FunctionExpression("sqrt", numericalExpression))
   }
 
   /**
@@ -1527,7 +1551,7 @@ object CypherQuery {
    * @return
    */
   def sign(numericalExpression: NumericExpression): NumericExpression = {
-    return Value(new FunctionExpression("sign", numericalExpression))
+    return new Value(new FunctionExpression("sign", numericalExpression))
   }
 
   sealed trait BooleanExpressionOperator

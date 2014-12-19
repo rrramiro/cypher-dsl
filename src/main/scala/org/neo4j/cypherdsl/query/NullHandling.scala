@@ -17,33 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl
+package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.query.AbstractExpression
-import org.neo4j.cypherdsl.query.Value
-import java.lang.StringBuilder
+import org.neo4j.cypherdsl.AsString
 
 /**
- * Represents a literal value, such as a string or number.
+ * Null handling for property references
  */
-object Literal {
-
-  private class LiteralExpression[B](value: B) extends AbstractExpression {
-
-    def asString(builder: StringBuilder) {
-      if (value.isInstanceOf[String]) {
-        builder.append("\"").append(value.toString.replace("\\", "\\\\").replace("\"", "\\\"")).append("\"")
-      }
-      else {
-        builder.append(value.toString)
-      }
-    }
-
-    override def toString: String = {
-      return value.toString
-    }
-  }
-
+object NullHandling extends Enumeration {
+  type NullHandling = Value
+  val NULL, TRUE_IF_MISSING, FALSE_IF_MISSING = Value
 }
 
-private[cypherdsl] class Literal[A](value: A) extends Value(new Literal.LiteralExpression(value))

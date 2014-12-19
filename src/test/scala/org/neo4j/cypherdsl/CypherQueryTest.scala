@@ -30,7 +30,7 @@ import org.neo4j.cypherdsl.CypherQuery.nodesById
 import org.neo4j.cypherdsl.CypherQuery.nodesByParameter
 import org.neo4j.cypherdsl.CypherQuery.not
 import org.neo4j.cypherdsl.CypherQuery.param
-import org.neo4j.cypherdsl.CypherQuery.query
+import org.neo4j.cypherdsl.CypherQuery.{query => cypherquery}
 import org.neo4j.cypherdsl.CypherQuery.queryByParameter
 import org.neo4j.cypherdsl.CypherQuery.relationshipLookup
 import org.neo4j.cypherdsl.CypherQuery.relationshipsById
@@ -52,8 +52,8 @@ class CypherQueryTest extends AbstractCypherTest {
     assertQueryEquals(CYPHER + "START john=node({name}) RETURN john", start(nodesByParameter("john", "name")).returns(identifier("john")).toString)
     assertQueryEquals(CYPHER + "START family=node(*) RETURN family", start(allNodes("family")).returns(identifier("family")).toString)
     assertQueryEquals(CYPHER + "START john=node:nodes(name=\"John\") RETURN john", start(lookup("john", "nodes", "name", "John")).returns(identifier("john")).toString)
-    assertQueryEquals(CYPHER + "START john=node:nodes(\"name:John\") RETURN john", start(query("john", "nodes", "name:John")).returns(identifier("john")).toString)
-    assertQueryEquals(CYPHER + "START john=node:nodes('name:\"John doe\"') RETURN john", start(query("john", "nodes", "name:\"John doe\"")).returns(identifier("john")).toString)
+    assertQueryEquals(CYPHER + "START john=node:nodes(\"name:John\") RETURN john", start(cypherquery("john", "nodes", "name:John")).returns(identifier("john")).toString)
+    assertQueryEquals(CYPHER + "START john=node:nodes('name:\"John doe\"') RETURN john", start(cypherquery("john", "nodes", "name:\"John doe\"")).returns(identifier("john")).toString)
     assertEquals(CYPHER + "START john=node:nodes({param}) RETURN john", start(queryByParameter("john", "nodes", "param")).returns(identifier("john")).toString)
     try {
       start(nodesById("", 0))
@@ -120,7 +120,7 @@ class CypherQueryTest extends AbstractCypherTest {
 
   @Test def testReturn {
     assertQueryEquals(CYPHER + "START john=node(0) RETURN john", start(nodesById("john", 0)).returns(identifier("john")).toString)
-    assertQueryEquals(CYPHER + "START mom=node(0),dad=node(1) RETURN mom,dad", start(nodesById("mom", 0), nodesById("dad", 1)).returns(identifiers("mom", "dad")).toString)
+    assertQueryEquals(CYPHER + "START mom=node(0),dad=node(1) RETURN mom,dad", start(nodesById("mom", 0), nodesById("dad", 1)).returns(identifiers("mom", "dad"): _*).toString)
     assertQueryEquals(CYPHER + "START mom=node(0),dad=node(1) RETURN mom.age AS momsAge,dad.age AS dadsAge", start(nodesById("mom", 0), nodesById("dad", 1)).returns(as(identifier("mom").property("age"), "momsAge"), as(identifier("dad").property("age"), "dadsAge")).toString)
   }
 

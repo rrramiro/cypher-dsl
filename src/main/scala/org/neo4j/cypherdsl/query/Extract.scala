@@ -17,26 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query;
+package org.neo4j.cypherdsl.query
 
+import org.neo4j.cypherdsl.Identifier
+import org.neo4j.cypherdsl.expression.CollectionExpression
+import org.neo4j.cypherdsl.expression.ScalarExpression
+import java.lang.StringBuilder
 /**
- * Represents a collection of expressions
+ * Represents an extract function
  */
-public class ExpressionCollection
-        extends AbstractExpression
-{
-    private final Expressions expressions;
+class Extract(name: Identifier, iterable: CollectionExpression, expression: ScalarExpression) extends AbstractExpression {
 
-    public ExpressionCollection( Expressions expressions )
-    {
-        this.expressions = expressions;
-    }
 
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        builder.append( "[" );
-        expressions.asString( builder );
-        builder.append( "]" );
-    }
+  def asString(builder: StringBuilder) {
+    builder.append("extract").append('(')
+    name.asString(builder)
+    builder.append(" IN ")
+    iterable.asString(builder)
+    builder.append("|")
+    expression.asString(builder)
+    builder.append(')')
+  }
 }

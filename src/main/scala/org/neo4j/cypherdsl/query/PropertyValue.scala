@@ -17,33 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl
+package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.query.AbstractExpression
-import org.neo4j.cypherdsl.query.Value
+import org.neo4j.cypherdsl.AsString
+import org.neo4j.cypherdsl.Identifier
+import org.neo4j.cypherdsl.expression.Expression
 import java.lang.StringBuilder
-
 /**
- * Represents a literal value, such as a string or number.
+ * Represents matching a property to a value
  */
-object Literal {
+class PropertyValue(id: Identifier, value: Expression) extends AsString {
 
-  private class LiteralExpression[B](value: B) extends AbstractExpression {
 
-    def asString(builder: StringBuilder) {
-      if (value.isInstanceOf[String]) {
-        builder.append("\"").append(value.toString.replace("\\", "\\\\").replace("\"", "\\\"")).append("\"")
-      }
-      else {
-        builder.append(value.toString)
-      }
-    }
-
-    override def toString: String = {
-      return value.toString
-    }
+  def asString(builder: StringBuilder) {
+    id.asString(builder)
+    builder.append(':')
+    value.asString(builder)
   }
-
 }
-
-private[cypherdsl] class Literal[A](value: A) extends Value(new Literal.LiteralExpression(value))

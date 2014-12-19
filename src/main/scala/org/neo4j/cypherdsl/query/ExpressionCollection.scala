@@ -17,33 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.neo4j.cypherdsl.query;
+package org.neo4j.cypherdsl.query
+import java.lang.StringBuilder
 
 /**
- * Represents a collection of PropertyValue
+ * Represents a collection of expressions
  */
-public class PropertyValues
-        extends AbstractExpression
-{
-    private final Iterable<PropertyValue> propertyValues;
+class ExpressionCollection(expressions: Expressions) extends AbstractExpression {
 
-    public PropertyValues( Iterable<PropertyValue> propertyValues )
-    {
-        this.propertyValues = propertyValues;
-    }
-
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        builder.append( "{" );
-        String comma = "";
-        for ( PropertyValue propertyValue : propertyValues )
-        {
-            builder.append( comma );
-            propertyValue.asString( builder );
-            comma = ",";
-        }
-        builder.append( '}' );
-    }
+  def asString(builder: StringBuilder) {
+    builder.append("[")
+    expressions.asString(builder)
+    builder.append("]")
+  }
 }

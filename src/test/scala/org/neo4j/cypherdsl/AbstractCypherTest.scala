@@ -84,4 +84,6 @@ abstract class AbstractCypherTest {
       }
     }
   }
+
+  def engine = AbstractCypherTest.engine
 }

@@ -17,41 +17,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query;
+package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.AsString;
-import org.neo4j.cypherdsl.expression.Expression;
-
-import java.io.Serializable;
+import org.neo4j.cypherdsl.AsString
+import org.neo4j.cypherdsl.expression.Expression
+import java.io.Serializable
+import java.lang.StringBuilder
 
 /**
  * Represents the left part and the operator in an operation. E.g. 1 + 2 -> 1 and + are handled here. This is used
  * with a Value that holds an Operator and deals with the 2.
  */
-public class Operator
-        implements AsString, Serializable
-{
-    public final Expression left; // null if this is a unary operator
-    public final String operator;
+class Operator(operator: String) extends AsString with Serializable {
+  var left: Expression = null
 
-    public Operator( String operator )
-    {
-        this( null, operator );
-    }
+  def this(left: Expression, operator: String) {
+    this(operator)
+    this.left = left
+  }
 
-    public Operator( Expression left, String operator )
-    {
-        this.left = left;
-        this.operator = operator;
+  def asString(builder: StringBuilder) {
+    if (left != null) {
+      left.asString(builder)
     }
-
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        if ( left != null )
-        {
-            left.asString( builder );
-        }
-        builder.append( operator );
-    }
+    builder.append(operator)
+  }
 }

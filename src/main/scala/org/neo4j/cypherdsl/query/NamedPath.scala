@@ -17,29 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query;
+package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.expression.Expression;
-
+import org.neo4j.cypherdsl.Identifier
+import org.neo4j.cypherdsl.expression.PathExpression
+import java.lang.StringBuilder
 /**
- * Expresses all functions of the form "exp f", such as "exp is null"
+ * Represents a named path.
  */
-public class SuffixFunctionExpression
-        extends AbstractExpression
-{
-    public final String name;
-    public final Expression expression;
+class NamedPath(identifier: Identifier, path: PathExpression) extends AbstractExpression with PathExpression {
 
-    public SuffixFunctionExpression( String name, Expression expression )
-    {
-        this.name = name;
-        this.expression = expression;
-    }
-
-    @Override
-    public void asString( StringBuilder builder )
-    {
-        expression.asString( builder );
-        builder.append( name );
-    }
+  def asString(builder: StringBuilder) {
+    identifier.asString(builder)
+    builder.append('=')
+    path.asString(builder)
+  }
 }
