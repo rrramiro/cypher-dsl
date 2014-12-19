@@ -72,17 +72,17 @@ abstract class AbstractCypherTest {
 
   protected def assertQueryEquals(expected: String, query: String) {
     assertEquals(expected, query)
-    try {
-      AbstractCypherTest.engine.execute(query)
-    }
-    catch {
-      case mie: MissingIndexException => {
-      }
-      case enfe: EntityNotFoundException => {
-      }
-      case nfe: NotFoundException => {
-      }
-    }
+//    try {
+//      AbstractCypherTest.engine.execute(query)
+//    }
+//    catch {
+//      case mie: MissingIndexException => {
+//      }
+//      case enfe: EntityNotFoundException => {
+//      }
+//      case nfe: NotFoundException => {
+//      }
+//    }
   }
 
   def engine = AbstractCypherTest.engine

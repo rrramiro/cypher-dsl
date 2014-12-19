@@ -1556,10 +1556,10 @@ object CypherQuery {
 
   sealed trait BooleanExpressionOperator
 
-  class And(expressions: BooleanExpression*) extends Value(new Expressions(expressions.asInstanceOf[Array[Expression]])) with BooleanExpressionOperator {
+  class And(expressions: BooleanExpression*) extends Value(new Expressions(expressions)) with BooleanExpressionOperator {
 
     override def asString(builder: StringBuilder): Unit = {
-      builder.append(this.value.asInstanceOf[Array[BooleanExpression]].map {
+      builder.append(expressions.map {
         case expression: BooleanExpressionOperator =>
           val builder2 = new StringBuilder()
           builder2.append('(')
@@ -1574,10 +1574,10 @@ object CypherQuery {
     }
   }
 
-  class Or(expressions: BooleanExpression*) extends Value(new Expressions(expressions.asInstanceOf[Array[Expression]])) with BooleanExpressionOperator {
+  class Or(expressions: BooleanExpression*) extends Value(new Expressions(expressions)) with BooleanExpressionOperator {
 
     override def asString(builder: StringBuilder) {
-      builder.append(this.value.asInstanceOf[Array[BooleanExpression]].map {
+      builder.append(expressions.map {
         case expression: And =>
           val builder2 = new StringBuilder()
           builder2.append('(')

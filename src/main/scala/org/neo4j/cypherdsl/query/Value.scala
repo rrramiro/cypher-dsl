@@ -34,7 +34,7 @@ class Value(val value: Expression) extends AbstractExpression with ScalarExpress
 
   def this(operatorParam: Operator, value: Expression) = {
     this(value)
-    Query.checkNull(operator, "Operator")
+    Query.checkNull(operatorParam, "Operator")
     this.operator = operatorParam
   }
 
