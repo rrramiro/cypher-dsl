@@ -16,5 +16,7 @@ libraryDependencies ++= Seq(
     "org.codehaus.jackson" % "jackson-core-asl" % "1.9.2",
     "org.codehaus.jackson" % "jackson-mapper-asl" % "1.9.2",
     "org.neo4j" % "neo4j-kernel" % "2.0.4" % "test" classifier "tests",
-    "com.novocode" % "junit-interface" % "0.11" % "test"
+    "com.novocode" % "junit-interface" % "0.11" % "test",
+    "joda-time" % "joda-time" % "2.3",
+    "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test"
 )
