@@ -52,105 +52,107 @@ case class CyString(value: String) extends CyValue
 /**
  * Represent a Cyon object value.
  */
-case class CyValues(fields: Seq[(String, CyValue)]) extends CyValue {
+case class CyValues(value: Map[String, CyValue]) extends CyValue {
 
-  val value: Map[String, CyValue] = fields.toMap
+  def this(fields: Seq[(String, CyValue)]) = {
+    this( fields.toMap)
+  }
 
   def apply(key: String) = value(key)
 
   /**
    * Return all keys
    */
-  def keys: Set[String] = fields.map(_._1).toSet
+  def keys: Set[String] = value.keySet
 
   /**
    * Return all values
    */
-  def values: Set[CyValue] = fields.map(_._2).toSet
+  def values: Set[CyValue] = value.values.toSet
 
-  def fieldSet: Set[(String, CyValue)] = fields.toSet
+  def fieldSet: Set[(String, CyValue)] = value.toSet
 
-  /**
-   * Merge this object with an other one. Values from other override value of the current object.
-   */
-  def ++(other: CyValues): CyValues =
-    CyValues(fields.filterNot(field => other.keys(field._1)) ++ other.fields)
+//  /**
+//   * Merge this object with an other one. Values from other override value of the current object.
+//   */
+//  def ++(other: CyValues): CyValues =
+//    CyValues(fields.filterNot(field => other.keys(field._1)) ++ other.fields)
 
-  /**
-   * removes one field from CyObject
-   */
-  def -(otherField: String): CyValues =
-    CyValues(fields.filterNot(_._1 == otherField))
+//  /**
+//   * removes one field from CyObject
+//   */
+//  def -(otherField: String): CyValues =
+//    CyValues(fields.filterNot(_._1 == otherField))
 
-  /**
-   * adds one field from CyObject
-   */
-  def +(otherField: (String, CyValue)): CyValues =
-    CyValues(fields :+ otherField)
+//  /**
+//   * adds one field from CyObject
+//   */
+//  def +(otherField: (String, CyValue)): CyValues =
+//    CyValues(fields :+ otherField)
 
-  /**
-   * merges everything in depth and doesn't stop at first level as ++
-   * TODO : improve because coding is nasty there
-   */
-  def deepMerge(other: CyValues): CyValues = {
-    def step(fields: Vector[(String, CyValue)], others: Vector[(String, CyValue)]): Seq[(String, CyValue)] = {
-      others match {
-        case Vector() => fields
-        case Vector(sv) =>
-          var found = false
-          val newFields = fields match {
-            case Vector() => Vector(sv)
-            case _ => fields.foldLeft(Vector[(String, CyValue)]()) { (acc, field) =>
-              field match {
-                case (key, obj: CyValues) if (key == sv._1) =>
-                  found = true
-                  acc :+ key -> {
-                    sv._2 match {
-                      case o @ CyValues(_) => obj.deepMerge(o)
-                      case js => js
-                    }
-                  }
-                case (key, value) if (key == sv._1) =>
-                  found = true
-                  acc :+ key -> sv._2
-                case (key, value) => acc :+ key -> value
-              }
-            }
-          }
-
-          if (!found) fields :+ sv
-          else newFields
-
-        case head +: tail =>
-          var found = false
-          val headFields = fields match {
-            case Vector() => Vector(head)
-            case _ => fields.foldLeft(Vector[(String, CyValue)]()) { (acc, field) =>
-              field match {
-                case (key, obj: CyValues) if (key == head._1) =>
-                  found = true
-                  acc :+ key -> {
-                    head._2 match {
-                      case o @ CyValues(_) => obj.deepMerge(o)
-                      case js => js
-                    }
-                  }
-                case (key, value) if (key == head._1) =>
-                  found = true
-                  acc :+ key -> head._2
-                case (key, value) => acc :+ key -> value
-              }
-            }
-          }
-
-          if (!found) step(fields :+ head, tail)
-          else step(headFields, tail)
-
-      }
-    }
-
-    CyValues(step(fields.toVector, other.fields.toVector))
-  }
+//  /**
+//   * merges everything in depth and doesn't stop at first level as ++
+//   * TODO : improve because coding is nasty there
+//   */
+//  def deepMerge(other: CyValues): CyValues = {
+//    def step(fields: Vector[(String, CyValue)], others: Vector[(String, CyValue)]): Seq[(String, CyValue)] = {
+//      others match {
+//        case Vector() => fields
+//        case Vector(sv) =>
+//          var found = false
+//          val newFields = fields match {
+//            case Vector() => Vector(sv)
+//            case _ => fields.foldLeft(Vector[(String, CyValue)]()) { (acc, field) =>
+//              field match {
+//                case (key, obj: CyValues) if (key == sv._1) =>
+//                  found = true
+//                  acc :+ key -> {
+//                    sv._2 match {
+//                      case o @ CyValues(_) => obj.deepMerge(o)
+//                      case js => js
+//                    }
+//                  }
+//                case (key, value) if (key == sv._1) =>
+//                  found = true
+//                  acc :+ key -> sv._2
+//                case (key, value) => acc :+ key -> value
+//              }
+//            }
+//          }
+//
+//          if (!found) fields :+ sv
+//          else newFields
+//
+//        case head +: tail =>
+//          var found = false
+//          val headFields = fields match {
+//            case Vector() => Vector(head)
+//            case _ => fields.foldLeft(Vector[(String, CyValue)]()) { (acc, field) =>
+//              field match {
+//                case (key, obj: CyValues) if (key == head._1) =>
+//                  found = true
+//                  acc :+ key -> {
+//                    head._2 match {
+//                      case o @ CyValues(_) => obj.deepMerge(o)
+//                      case js => js
+//                    }
+//                  }
+//                case (key, value) if (key == head._1) =>
+//                  found = true
+//                  acc :+ key -> head._2
+//                case (key, value) => acc :+ key -> value
+//              }
+//            }
+//          }
+//
+//          if (!found) step(fields :+ head, tail)
+//          else step(headFields, tail)
+//
+//      }
+//    }
+//
+//    CyValues(step(fields.toVector, other.fields.toVector))
+//  }
 
   override def equals(other: Any): Boolean =
     other match {

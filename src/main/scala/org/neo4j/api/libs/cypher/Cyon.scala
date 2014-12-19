@@ -10,7 +10,7 @@ package org.neo4j.api.libs.cypher
  */
 object Cyon {
 
-  def node(labels: String*) = CyNode.apply(CyValues.apply(List.empty), labels: _*)
+  def node(labels: String*) = CyNode.apply(CyValues.apply(Map.empty), new CyLabels(labels: _*))
 
   /**
    * Provided a Writes implicit for its type is available, convert any object into a CyValue.
@@ -49,7 +49,7 @@ object Cyon {
 
   implicit def toCyFieldCyValueWrapper[T](field: T)(implicit w: Writes[T]): CyValueWrapper = CyValueWrapperImpl(w.writes(field))
 
-  def values(fields: (String, CyValueWrapper)*): CyValues = CyValues(fields.map{f =>
+  def values(fields: (String, CyValueWrapper)*): CyValues = new CyValues(fields.map{f =>
     (f._1, f._2.asInstanceOf[CyValueWrapperImpl].field)
   })
 

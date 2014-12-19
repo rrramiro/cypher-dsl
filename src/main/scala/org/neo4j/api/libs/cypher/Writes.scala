@@ -146,7 +146,7 @@ trait DefaultWrites {
    * Serializer for Map[String,V] types.
    */
   implicit def mapWrites[V](implicit fmtv: Writes[V]): OWrites[collection.immutable.Map[String, V]] = OWrites[collection.immutable.Map[String, V]] { ts =>
-    CyValues(ts.map { case (k, v) => (k, toCyon(v)(fmtv)) }.toList)
+    new CyValues(ts.map { case (k, v) => (k, toCyon(v)(fmtv)) }.toList)
   }
 
 

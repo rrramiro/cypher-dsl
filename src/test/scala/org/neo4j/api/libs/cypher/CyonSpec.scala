@@ -3,13 +3,11 @@ package org.neo4j.api.libs.cypher
 
 import org.scalatest._
 
-import Cyon._
-/**
- * Created by Ramiro Calle on 19/12/2014.
- */
+import Cyon.node
+
 class CyonSpec extends FlatSpec with Matchers {
   it should "init values for a node" in {
-    val valuesObj = values(
+    val valuesObj = Cyon.values(
       "property1" -> "text",
       "property2" -> 22,
       "property3" -> 'c',
@@ -23,13 +21,12 @@ class CyonSpec extends FlatSpec with Matchers {
     valuesObj("property1") should be (CyString("text"))
     valuesObj("property2") should be (CyNumber(22))
     valuesObj("property3") should be (CyString("c"))
-    valuesObj("property7") should be (CyBoolean(true))
+    valuesObj("property7") should be (CyBoolean(value = true))
     valuesObj("property9") should be (CyNumber(5))
   }
 
   it should "init a node with labels" in {
-    val newNode: CyNode = node("Label1", "Label2").values("prop1" -> "text")
-    //val othernode = node.copy(values =  )
-    newNode should be (CyNode(CyValues(List.empty), "Label1", "Label2"))
+    val newNode: CyNode = node("Label1", "Label2").values("prop1" -> "text").out("CONTAINS", node("LabelA"))
+    newNode should be (CyNode(CyValues(Map("prop1" -> CyString("text"))), CyLabels("Label1", "Label2")))
   }
 }
