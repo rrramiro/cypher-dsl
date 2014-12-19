@@ -19,19 +19,13 @@
  */
 package org.neo4j.cypherdsl.querydsl
 
-import com.mysema.query.lucene.LuceneSerializer
-
-import org.neo4j.cypherdsl.CypherQuery
-import org.neo4j.cypherdsl.Identifier
-import org.neo4j.cypherdsl.Property
-import org.neo4j.cypherdsl.expression.BooleanExpression
-import com.mysema.query.types.{Expression => MysemaExpression}
-import com.mysema.query.types.{Path, Predicate, Constant, FactoryExpression, Operation, ParamExpression, Ops, SubQueryExpression, TemplateExpression, Visitor}
-import org.neo4j.cypherdsl.expression.Expression
-import org.neo4j.cypherdsl.expression.NumericExpression
-import org.neo4j.cypherdsl.expression.StringExpression
-import org.neo4j.cypherdsl.query.Value
 import javax.annotation.Nullable
+
+import com.mysema.query.lucene.LuceneSerializer
+import com.mysema.query.types.{Constant, Expression => MysemaExpression, FactoryExpression, Operation, Ops, ParamExpression, Path, Predicate, SubQueryExpression, TemplateExpression, Visitor}
+import org.neo4j.cypherdsl.{CypherQuery, Identifier, Property}
+import org.neo4j.cypherdsl.expression.{BooleanExpression, Expression, NumericExpression, StringExpression}
+import org.neo4j.cypherdsl.query.Value
 
 /**
  * Methods here are used to integrate Cypher DSL with the QueryDSL library. Create QBeans with QueryDSL
@@ -65,9 +59,11 @@ object CypherQueryDSL {
       def visit(constant: Constant[_], @Nullable booleanExpression: BooleanExpression): BooleanExpression = {
         return null
       }
+
       def visit(factoryExpression: FactoryExpression[_], @Nullable booleanExpression: BooleanExpression): BooleanExpression = {
         return null
       }
+
       def visit(operation: Operation[_], @Nullable booleanExpression: BooleanExpression): BooleanExpression = {
         val id: String = operation.getOperator.getId
         if (id == Ops.AND.getId) {
@@ -113,18 +109,23 @@ object CypherQueryDSL {
           throw new IllegalArgumentException("Unknown operator:" + id + " in expression " + operation)
         }
       }
+
       def visit(paramExpression: ParamExpression[_], @Nullable booleanExpression: BooleanExpression): BooleanExpression = {
         return null
       }
+
       def visit(path: Path[_], @Nullable booleanExpression: BooleanExpression): BooleanExpression = {
         return null
       }
+
       def visit(subQueryExpression: SubQueryExpression[_], @Nullable booleanExpression: BooleanExpression): BooleanExpression = {
         return null
       }
+
       def visit(templateExpression: TemplateExpression[_], @Nullable booleanExpression: BooleanExpression): BooleanExpression = {
         return null
       }
+
       def arg(expression: MysemaExpression[_]): Value = {
         if (expression.isInstanceOf[Constant[_]]) {
           return new Value(CypherQuery.literal((expression.asInstanceOf[Constant[_]]).getConstant.toString))

@@ -19,8 +19,6 @@
  */
 package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.AsString
-
 /**
  * Null handling for property references
  */

@@ -17,18 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query
+package org.neo4j.cypherdsl.query.clause
 
 import java.lang.StringBuilder
 
+import org.neo4j.cypherdsl.expression.PathExpression
+
+import scala.language.implicitConversions
+
 /**
- * Represents a collection of expressions
+ * CREATE clause
  */
-class ExpressionCollection(expressions: Expressions) extends AbstractExpression {
+class CreateClause(expressionsParameter: PathExpression*) extends Clause {
+  val expressions = expressionsParameter.toList
 
   def asString(builder: StringBuilder) {
-    builder.append("[")
-    expressions.asString(builder)
-    builder.append("]")
+    clauseAsString(builder, "CREATE", expressions, ",")
   }
 }

@@ -17,18 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query
+package org.neo4j.cypherdsl.query.clause
 
 import java.lang.StringBuilder
 
+import org.neo4j.cypherdsl.expression.Expression
+import org.neo4j.cypherdsl.query.OrderByExpression
+
 /**
- * Represents a collection of expressions
+ * ORDER BY clause
  */
-class ExpressionCollection(expressions: Expressions) extends AbstractExpression {
+class OrderByClause(expressionsParameter: Expression*) extends Clause {
+  val expressions = (for (expression <- expressionsParameter) yield {
+    expression match {
+      case expr: OrderByExpression => expr
+      case _ => new OrderByExpression(expression, null)
+    }
+  }).toList
 
   def asString(builder: StringBuilder) {
-    builder.append("[")
-    expressions.asString(builder)
-    builder.append("]")
+    clauseAsString(builder, "ORDER BY", expressions, ",")
   }
 }

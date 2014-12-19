@@ -19,9 +19,11 @@
  */
 package org.neo4j.cypherdsl.query
 
+import java.lang.StringBuilder
+
 import org.neo4j.cypherdsl.Identifier
 import org.neo4j.cypherdsl.expression.PathExpression
-import java.lang.StringBuilder
+
 /**
  * Represents a named path.
  */

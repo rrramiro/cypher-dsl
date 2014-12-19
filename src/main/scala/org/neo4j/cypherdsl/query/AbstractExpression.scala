@@ -19,12 +19,11 @@
  */
 package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.CypherQuery
-import org.neo4j.cypherdsl.expression.BooleanExpression
-import org.neo4j.cypherdsl.expression.CollectionExpression
-import org.neo4j.cypherdsl.expression.Expression
-import org.neo4j.cypherdsl.CypherQuery.literal
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.CypherQuery
+import org.neo4j.cypherdsl.CypherQuery.literal
+import org.neo4j.cypherdsl.expression.{BooleanExpression, CollectionExpression, Expression}
 
 /**
  * Common methods for all expressions

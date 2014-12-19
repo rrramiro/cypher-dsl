@@ -19,10 +19,11 @@
  */
 package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.Identifier
-import org.neo4j.cypherdsl.expression.BooleanExpression
-import org.neo4j.cypherdsl.expression.CollectionExpression
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.Identifier
+import org.neo4j.cypherdsl.expression.{BooleanExpression, CollectionExpression}
+
 /**
  * Iterable predicates are of the form: function(name IN iterable WHERE predicate)
  */

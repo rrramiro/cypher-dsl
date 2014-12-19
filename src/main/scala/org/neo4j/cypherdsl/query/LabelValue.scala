@@ -19,8 +19,10 @@
  */
 package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.Identifier
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.Identifier
+
 /**
  * Represents matching a label to a value
  */

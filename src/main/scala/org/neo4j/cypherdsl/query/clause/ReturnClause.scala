@@ -17,18 +17,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query
+package org.neo4j.cypherdsl.query.clause
 
-import java.lang.StringBuilder
+import java.lang.{Iterable, StringBuilder}
+
+import org.neo4j.cypherdsl.expression.Expression
+
+import scala.collection.JavaConversions.iterableAsScalaIterable
+import scala.language.implicitConversions
 
 /**
- * Represents a collection of expressions
+ * RETURN clause
  */
-class ExpressionCollection(expressions: Expressions) extends AbstractExpression {
+class ReturnClause(expressionsParameter: Iterable[Expression]) extends Clause {
+  val expressions = expressionsParameter.toList
 
   def asString(builder: StringBuilder) {
-    builder.append("[")
-    expressions.asString(builder)
-    builder.append("]")
+    clauseAsString(builder, "RETURN", expressions, ",")
   }
 }

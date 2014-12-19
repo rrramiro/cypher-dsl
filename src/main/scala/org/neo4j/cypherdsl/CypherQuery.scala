@@ -19,16 +19,16 @@
  */
 package org.neo4j.cypherdsl
 
+import java.lang.StringBuilder
+import java.util.{HashMap, Map}
+
 import org.neo4j.cypherdsl.expression._
 import org.neo4j.cypherdsl.grammar._
+import org.neo4j.cypherdsl.query.Query.{checkEmpty, checkNull}
 import org.neo4j.cypherdsl.query._
 import org.neo4j.cypherdsl.query.clause._
-import java.util.HashMap
-import java.util.Map
-import org.neo4j.cypherdsl.query.Query.checkEmpty
-import org.neo4j.cypherdsl.query.Query.checkNull
-import java.lang.StringBuilder
-import scala.collection.JavaConversions.asJavaIterable
+
+import scala.collection.JavaConversions.{asJavaIterable, iterableAsScalaIterable}
 import scala.language.implicitConversions
 
 /**
@@ -51,10 +51,10 @@ object CypherQuery {
    * <p/>
    * Example:
    * <pre>
-   *     new CypherQuery()
-   *     {{
-   *         starts(node("n",1)).returns(identifier("n"));
-   *     }}.toString()
+   * new CypherQuery()
+   * {{
+   * starts(node("n",1)).returns(identifier("n"));
+   * }}.toString()
    * </pre>
    */
   def apply(): CypherQuery = {
@@ -188,29 +188,29 @@ object CypherQuery {
     return new Literal(value)
   }
 
-    /**
-     * Declare a literal boolean value, such as true or false.
-     *
-     * @param value literal value
-     * @return Literal instance
-     */
-    def literal(value: Boolean): BooleanExpression = {
-      return new Literal(value)
-    }
+  /**
+   * Declare a literal boolean value, such as true or false.
+   *
+   * @param value literal value
+   * @return Literal instance
+   */
+  def literal(value: Boolean): BooleanExpression = {
+    return new Literal(value)
+  }
 
-//  /**
-//   * Declare a literal value using an untyped object.
-//   * <p/>
-//   * If a string is passed in, then output will
-//   * be quoted appropriately.
-//   *
-//   * @param value literal value
-//   * @return Literal instance
-//   */
-//  def literal(value: AnyRef): ScalarExpression = {
-//    checkNull(value, "Value")
-//    return new Literal(value)
-//  }
+  //  /**
+  //   * Declare a literal value using an untyped object.
+  //   * <p/>
+  //   * If a string is passed in, then output will
+  //   * be quoted appropriately.
+  //   *
+  //   * @param value literal value
+  //   * @return Literal instance
+  //   */
+  //  def literal(value: AnyRef): ScalarExpression = {
+  //    checkNull(value, "Value")
+  //    return new Literal(value)
+  //  }
 
   /**
    * Declare an identifier. This is used to
@@ -1603,7 +1603,7 @@ case class CypherQuery(query: Query) {
    * @return
    */
   protected def starts(startExpressions: StartExpression*): StartNext = {
-    query.add(new StartClause(startExpressions))
+    query.add(new StartClause(startExpressions: _*))
     return new Grammar
   }
 
@@ -1614,7 +1614,7 @@ case class CypherQuery(query: Query) {
    * @return
    */
   protected def starts(startExpressions: Iterable[StartExpression]): StartNext = {
-    query.add(new StartClause(startExpressions))
+    query.add(new StartClause(startExpressions.toList: _*))
     return new Grammar
   }
 
@@ -1625,7 +1625,7 @@ case class CypherQuery(query: Query) {
    * @return
    */
   protected def creates(paths: PathExpression*): UpdateNext = {
-    query.add(new CreateClause(paths))
+    query.add(new CreateClause(paths: _*))
     return new Grammar
   }
 
@@ -1647,7 +1647,7 @@ case class CypherQuery(query: Query) {
    * @return
    */
   protected def matches(paths: PathExpression*): StartNext = {
-    query.add(new MatchClause(paths))
+    query.add(new MatchClause(paths: _*))
     return new Grammar
   }
 
@@ -1661,15 +1661,16 @@ case class CypherQuery(query: Query) {
   }
 
   protected class Grammar extends StartNext with With with WithNext with Create with Set with Delete with Remove with CreateUnique with Merge with UpdateNext with Match with ReturnNext with OrderBy with Skip with Limit with Execute with Union with UnionNext {
+
     import java.lang.Iterable
 
     def `with`(withExpressions: Expression*): WithNext = {
-      query.add(new WithClause(withExpressions))
+      query.add(new WithClause(withExpressions: _*))
       return this
     }
 
     def `with`(withExpressions: Iterable[Expression]): WithNext = {
-      query.add(new WithClause(withExpressions))
+      query.add(new WithClause(withExpressions.toList: _*))
       return this
     }
 
@@ -1687,42 +1688,42 @@ case class CypherQuery(query: Query) {
     }
 
     def create(paths: PathExpression*): UpdateNext = {
-      query.add(new CreateClause(paths))
+      query.add(new CreateClause(paths: _*))
       return this
     }
 
     def create(paths: Iterable[PathExpression]): UpdateNext = {
-      query.add(new CreateClause(paths))
+      query.add(new CreateClause(paths.toList: _*))
       return this
     }
 
     def set(setProperties: SetProperty*): UpdateNext = {
-      query.add(new SetClause(setProperties))
+      query.add(new SetClause(setProperties: _*))
       return this
     }
 
     def set(setProperties: Iterable[SetProperty]): UpdateNext = {
-      query.add(new SetClause(setProperties))
+      query.add(new SetClause(setProperties.toList: _*))
       return this
     }
 
     def delete(expressions: ReferenceExpression*): UpdateNext = {
-      query.add(new DeleteClause(expressions))
+      query.add(new DeleteClause(expressions: _*))
       return this
     }
 
     def delete(expressions: Iterable[ReferenceExpression]): UpdateNext = {
-      query.add(new DeleteClause(expressions))
+      query.add(new DeleteClause(expressions.toList: _*))
       return this
     }
 
     def remove(expressions: ReferenceExpression*): UpdateNext = {
-      query.add(new RemoveClause(expressions))
+      query.add(new RemoveClause(expressions: _*))
       return this
     }
 
     def remove(expressions: Iterable[ReferenceExpression]): UpdateNext = {
-      query.add(new RemoveClause(expressions))
+      query.add(new RemoveClause(expressions.toList: _*))
       return this
     }
 
@@ -1752,22 +1753,22 @@ case class CypherQuery(query: Query) {
     }
 
     def starts(startExpression: StartExpression*): StartNext = {
-      query.add(new StartClause(startExpression))
+      query.add(new StartClause(startExpression: _*))
       return this
     }
 
     def starts(startExpression: Iterable[StartExpression]): StartNext = {
-      query.add(new StartClause(startExpression))
+      query.add(new StartClause(startExpression.toList: _*))
       return this
     }
 
     def `match`(expressions: PathExpression*): Match = {
-      query.add(new MatchClause(expressions))
+      query.add(new MatchClause(expressions: _*))
       return this
     }
 
     def `match`(expressions: Iterable[PathExpression]): Match = {
-      query.add(new MatchClause(expressions))
+      query.add(new MatchClause(expressions.toList: _*))
       return this
     }
 
@@ -1796,12 +1797,12 @@ case class CypherQuery(query: Query) {
     }
 
     def orderBy(orderByExpressions: Expression*): OrderBy = {
-      query.add(new OrderByClause(orderByExpressions))
+      query.add(new OrderByClause(orderByExpressions: _*))
       return this
     }
 
     def orderBy(orderByExpressions: Iterable[Expression]): OrderBy = {
-      query.add(new OrderByClause(orderByExpressions))
+      query.add(new OrderByClause(orderByExpressions.toList: _*))
       return this
     }
 

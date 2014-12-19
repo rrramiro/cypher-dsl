@@ -22,6 +22,7 @@ package org.neo4j.cypherdsl
 import java.lang.StringBuilder
 
 import org.neo4j.cypherdsl.expression.Expression
+
 /**
  * Represents a property being assigned to a value. This is used for the SET clause.
  */

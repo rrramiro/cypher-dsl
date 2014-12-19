@@ -19,9 +19,9 @@
  */
 package org.neo4j.cypherdsl
 
-import org.neo4j.cypherdsl.query.AbstractExpression
-import org.neo4j.cypherdsl.query.Value
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.query.{AbstractExpression, Value}
 
 /**
  * Represents a parameter in a query.

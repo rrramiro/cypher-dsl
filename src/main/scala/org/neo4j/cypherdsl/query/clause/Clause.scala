@@ -17,18 +17,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query
+package org.neo4j.cypherdsl.query.clause
 
+import java.io.Serializable
 import java.lang.StringBuilder
 
-/**
- * Represents a collection of expressions
- */
-class ExpressionCollection(expressions: Expressions) extends AbstractExpression {
+import org.neo4j.cypherdsl.AsString
 
-  def asString(builder: StringBuilder) {
-    builder.append("[")
-    expressions.asString(builder)
-    builder.append("]")
+/**
+ * Base class for all clauses
+ */
+abstract class Clause extends AsString with Serializable with Cloneable {
+  protected def clauseAsString(builder: StringBuilder, name: String, asStringList: List[_ <: AsString], separator: String) {
+    if (!asStringList.isEmpty) {
+      if (builder.length > 0) {
+        builder.append(' ')
+      }
+      builder.append(name).append(' ')
+
+      {
+        var i: Int = 0
+        while (i < asStringList.size) {
+          {
+            val asString: AsString = asStringList(i)
+            if (i > 0) {
+              builder.append(separator)
+            }
+            asString.asString(builder)
+          }
+          ({
+            i += 1;
+            i - 1
+          })
+        }
+      }
+    }
   }
 }

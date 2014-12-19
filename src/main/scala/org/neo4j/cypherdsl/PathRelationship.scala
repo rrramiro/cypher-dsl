@@ -26,7 +26,6 @@ import org.neo4j.cypherdsl.CypherQuery.identifier
 import org.neo4j.cypherdsl.expression.Expression
 import org.neo4j.cypherdsl.query.{Direction, PropertyValue, PropertyValues, Query}
 
-import scala.collection.JavaConversions.asJavaIterable
 import scala.language.implicitConversions
 
 /**

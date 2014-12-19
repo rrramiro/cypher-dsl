@@ -19,17 +19,13 @@
  */
 package org.neo4j.cypherdsl
 
-import org.neo4j.cypherdsl.expression.Expression
-import org.neo4j.cypherdsl.expression.PathExpression
+import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.CypherQuery.{identifier, identifiers}
+import org.neo4j.cypherdsl.expression.{Expression, PathExpression}
+import org.neo4j.cypherdsl.query.Direction._
 import org.neo4j.cypherdsl.query._
 
-
-import org.neo4j.cypherdsl.CypherQuery.identifier
-import org.neo4j.cypherdsl.CypherQuery.identifiers
-import org.neo4j.cypherdsl.query.Direction._
-import java.lang.StringBuilder
-import scala.collection.JavaConversions.asJavaIterable
-import scala.collection.mutable.ListBuffer
 import scala.language.implicitConversions
 
 /**
@@ -148,23 +144,23 @@ private[cypherdsl] class Path(node: Expression, relationship: PathRelationship, 
     return new PathRelationship(this, OUT, null, relationship :: relationships.toList, null, null, null)
   }
 
-//  /**
-//   * Declare a new outgoing relationship from this node.
-//   * <p/>
-//   * Corresponds to:
-//   * <pre>
-//   * (n)-[:relationship1|relationship2]->(m)
-//   * </pre>
-//   *
-//   * @return
-//   */
-//  def out(relationships: Enum[_]*): PathRelationship = {
-//    val relationshipNames = new ListBuffer[Identifier]()
-//    for (relationship <- relationships) {
-//      relationshipNames.+=(identifier(relationship.name))
-//    }
-//    return new PathRelationship(this, OUT, null, relationshipNames, null, null, null)
-//  }
+  //  /**
+  //   * Declare a new outgoing relationship from this node.
+  //   * <p/>
+  //   * Corresponds to:
+  //   * <pre>
+  //   * (n)-[:relationship1|relationship2]->(m)
+  //   * </pre>
+  //   *
+  //   * @return
+  //   */
+  //  def out(relationships: Enum[_]*): PathRelationship = {
+  //    val relationshipNames = new ListBuffer[Identifier]()
+  //    for (relationship <- relationships) {
+  //      relationshipNames.+=(identifier(relationship.name))
+  //    }
+  //    return new PathRelationship(this, OUT, null, relationshipNames, null, null, null)
+  //  }
 
   /**
    * Declare a new outgoing relationship from this node.
@@ -208,23 +204,23 @@ private[cypherdsl] class Path(node: Expression, relationship: PathRelationship, 
     return new PathRelationship(this, IN, null, relationship :: relationships.toList, null, null, null)
   }
 
-//  /**
-//   * Declare a new incoming relationship to this node.
-//   * <p/>
-//   * Corresponds to:
-//   * <pre>
-//   * (n)<-[:relationship1|relationship2]-(m)
-//   * </pre>
-//   *
-//   * @return
-//   */
-//  def in(relationships: Enum[_]*): PathRelationship = {
-//    val relationshipNames = new ListBuffer[Identifier]()
-//    for (relationship <- relationships) {
-//      relationshipNames.+=(identifier(relationship.name))
-//    }
-//    return new PathRelationship(this, IN, null, relationshipNames, null, null, null)
-//  }
+  //  /**
+  //   * Declare a new incoming relationship to this node.
+  //   * <p/>
+  //   * Corresponds to:
+  //   * <pre>
+  //   * (n)<-[:relationship1|relationship2]-(m)
+  //   * </pre>
+  //   *
+  //   * @return
+  //   */
+  //  def in(relationships: Enum[_]*): PathRelationship = {
+  //    val relationshipNames = new ListBuffer[Identifier]()
+  //    for (relationship <- relationships) {
+  //      relationshipNames.+=(identifier(relationship.name))
+  //    }
+  //    return new PathRelationship(this, IN, null, relationshipNames, null, null, null)
+  //  }
 
   /**
    * Declare a new relationship on this node.
@@ -268,23 +264,23 @@ private[cypherdsl] class Path(node: Expression, relationship: PathRelationship, 
     return new PathRelationship(this, BOTH, null, relationship :: relationships.toList, null, null, null)
   }
 
-//  /**
-//   * Declare a new relationship on this node.
-//   * <p/>
-//   * Corresponds to:
-//   * <pre>
-//   * (n)-[:relationship1|relationship2]-(m)
-//   * </pre>
-//   *
-//   * @return
-//   */
-//  def both(relationships: Enum[_]*): PathRelationship = {
-//    val relationshipNames = new ListBuffer[Identifier]()
-//    for (relationship <- relationships) {
-//      relationshipNames.+=(identifier(relationship.name))
-//    }
-//    return new PathRelationship(this, BOTH, null, relationshipNames, null, null, null)
-//  }
+  //  /**
+  //   * Declare a new relationship on this node.
+  //   * <p/>
+  //   * Corresponds to:
+  //   * <pre>
+  //   * (n)-[:relationship1|relationship2]-(m)
+  //   * </pre>
+  //   *
+  //   * @return
+  //   */
+  //  def both(relationships: Enum[_]*): PathRelationship = {
+  //    val relationshipNames = new ListBuffer[Identifier]()
+  //    for (relationship <- relationships) {
+  //      relationshipNames.+=(identifier(relationship.name))
+  //    }
+  //    return new PathRelationship(this, BOTH, null, relationshipNames, null, null, null)
+  //  }
 
   def asString(builder: StringBuilder) {
     if (relationship != null) {

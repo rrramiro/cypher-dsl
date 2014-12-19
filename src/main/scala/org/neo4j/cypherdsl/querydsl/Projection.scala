@@ -19,21 +19,17 @@
  */
 package org.neo4j.cypherdsl.querydsl
 
-import com.mysema.query.types.{Expression => MysemaExpression}
-import com.mysema.query.types.Path
-import com.mysema.query.types.Projections
-import com.mysema.query.types.QBean
-import com.mysema.query.types.path.PathBuilder
 import java.lang.reflect.Field
-import java.util.ArrayList
-import java.util.List
-import java.util.Map
+import java.util.{ArrayList, List, Map}
+
+import com.mysema.query.types.path.PathBuilder
+import com.mysema.query.types.{Expression => MysemaExpression, Path, Projections, QBean}
 
 /**
  * Projection is responsible for converting the results of a query into an iterable of instances
  * of a given class.
  */
-object Projection{
+object Projection {
   def apply[T](targetClass: Class[T]) = {
     val entity: PathBuilder[T] = new PathBuilder[T](targetClass, "entity")
     val fields: Array[Field] = targetClass.getFields
@@ -45,7 +41,7 @@ object Projection{
       i += 1
     }
 
-    new Projection[T]( Projections.fields(targetClass, fieldExpressions: _*))
+    new Projection[T](Projections.fields(targetClass, fieldExpressions: _*))
   }
 }
 

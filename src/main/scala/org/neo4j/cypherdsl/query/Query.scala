@@ -20,15 +20,16 @@
 package org.neo4j.cypherdsl.query
 
 
-import org.neo4j.cypherdsl.AsString
-import org.neo4j.cypherdsl.Literal
-import org.neo4j.cypherdsl.expression.Expression
-import org.neo4j.cypherdsl.query.clause.Clause
-import org.neo4j.cypherdsl.query.clause.WhereClause
 import java.io.Serializable
-import java.util.ArrayList
-import scala.collection.JavaConversions._
 import java.lang.StringBuilder
+import java.util.ArrayList
+
+import org.neo4j.cypherdsl.{AsString, Literal}
+import org.neo4j.cypherdsl.expression.Expression
+import org.neo4j.cypherdsl.query.clause.{Clause, WhereClause}
+
+import scala.collection.JavaConversions._
+
 /**
  * Model for a Cypher Query. The model is serializable and cloneable, to make it easy to
  * save on disk or transfer over the wire. Being cloneable also helps with query builder continuation.
@@ -88,6 +89,7 @@ class Query(clauses: ArrayList[Clause] = new ArrayList[Clause]) extends AsString
     }
     clauses.add(clause)
   }
+
   //Todo use Options
   def lastClause[T <: Clause](`type`: Class[T]): T = {
     val clause: Clause = clauses.get(clauses.size - 1)
@@ -106,7 +108,6 @@ class Query(clauses: ArrayList[Clause] = new ArrayList[Clause]) extends AsString
       clause.asString(builder)
     }
   }
-
 
 
   @throws(classOf[CloneNotSupportedException])

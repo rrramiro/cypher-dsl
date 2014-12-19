@@ -19,8 +19,9 @@
  */
 package org.neo4j.cypherdsl.expression
 
-import org.neo4j.cypherdsl.query.AbstractExpression
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.query.AbstractExpression
 
 /**
  * Expression for *, used in count(*)

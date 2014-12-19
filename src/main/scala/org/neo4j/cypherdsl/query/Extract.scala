@@ -19,10 +19,11 @@
  */
 package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.Identifier
-import org.neo4j.cypherdsl.expression.CollectionExpression
-import org.neo4j.cypherdsl.expression.ScalarExpression
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.Identifier
+import org.neo4j.cypherdsl.expression.{CollectionExpression, ScalarExpression}
+
 /**
  * Represents an extract function
  */

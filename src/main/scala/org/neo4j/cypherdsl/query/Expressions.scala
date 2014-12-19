@@ -19,8 +19,9 @@
  */
 package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.expression.Expression
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.expression.Expression
 
 /**
  * Collections many expressions into a list
@@ -39,7 +40,8 @@ class Expressions(expressions: Seq[Expression], separator: String = ",") extends
           expression.asString(builder)
         }
         ({
-          i += 1; i - 1
+          i += 1;
+          i - 1
         })
       }
     }

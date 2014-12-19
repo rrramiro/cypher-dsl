@@ -17,18 +17,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query
+package org.neo4j.cypherdsl.query.clause
 
 import java.lang.StringBuilder
 
+import org.neo4j.cypherdsl.expression.PathExpression
+
+import scala.language.implicitConversions
+
 /**
- * Represents a collection of expressions
+ * MATCH clause
  */
-class ExpressionCollection(expressions: Expressions) extends AbstractExpression {
+class MatchClause(expressionsParameter: PathExpression*) extends Clause {
+  val expressions = expressionsParameter.toList
+
+  private var isOptional: Boolean = false
 
   def asString(builder: StringBuilder) {
-    builder.append("[")
-    expressions.asString(builder)
-    builder.append("]")
+    val name: String = (if (isOptional) "OPTIONAL " else "") + "MATCH"
+    clauseAsString(builder, name, expressions, ",")
+  }
+
+  def optional {
+    this.isOptional = true
   }
 }

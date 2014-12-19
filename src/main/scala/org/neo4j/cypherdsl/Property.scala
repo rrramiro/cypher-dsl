@@ -23,6 +23,7 @@ import java.lang.StringBuilder
 
 import org.neo4j.cypherdsl.expression.ReferenceExpression
 import org.neo4j.cypherdsl.query.{Operator, Value}
+
 /**
  * Represents a property reference.
  */

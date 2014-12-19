@@ -17,18 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.query
+package org.neo4j.cypherdsl
 
 import java.lang.StringBuilder
 
 /**
- * Represents a collection of expressions
+ * Interface for all parts of the model that should be externalizable to a StringBuilder.
  */
-class ExpressionCollection(expressions: Expressions) extends AbstractExpression {
-
-  def asString(builder: StringBuilder) {
-    builder.append("[")
-    expressions.asString(builder)
-    builder.append("]")
-  }
+trait AsString {
+  /**
+   * Implementations of this method should append the string representation of the model.
+   *
+   * @param builder
+   */
+  def asString(builder: StringBuilder)
 }

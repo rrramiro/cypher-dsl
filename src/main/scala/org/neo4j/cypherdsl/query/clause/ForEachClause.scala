@@ -17,63 +17,79 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.grammar
+package org.neo4j.cypherdsl.query.clause
 
 import java.lang.{Iterable, StringBuilder}
+import java.util.{ArrayList, List}
 
-import org.neo4j.cypherdsl.{AsString, SetProperty}
-import org.neo4j.cypherdsl.expression.{PathExpression, ReferenceExpression}
-import org.neo4j.cypherdsl.query.clause._
+import org.neo4j.cypherdsl.{AsString, Identifier, SetProperty}
+import org.neo4j.cypherdsl.expression.{Expression, PathExpression, ReferenceExpression}
+import org.neo4j.cypherdsl.grammar.{ForEachStatement, ForEachStatements}
 
 import scala.collection.JavaConversions.{asJavaIterable, iterableAsScalaIterable}
 import scala.language.implicitConversions
 
 /**
- * Represents a single statement to be executed with FOREACH
+ * FOR EACH clause
  */
-class ForEachStatement(forEachClause: ForEachClause) extends ForEachStatements with AsString {
+class ForEachClause(id: Identifier, in: Expression) extends Clause with AsString with ForEachStatements {
+  private final val forEachStatements: List[AsString] = new ArrayList[AsString]
+
 
   def create(paths: PathExpression*): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new CreateClause(paths: _*)))
+    return new ForEachStatement(add(new CreateClause(paths: _*)))
   }
 
   def create(paths: Iterable[PathExpression]): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new CreateClause(paths.toList: _*)))
+    return new ForEachStatement(add(new CreateClause(paths.toList: _*)))
   }
 
   def set(setProperties: SetProperty*): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new SetClause(setProperties: _*)))
+    return new ForEachStatement(add(new SetClause(setProperties: _*)))
   }
 
   def set(setProperties: Iterable[SetProperty]): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new SetClause(setProperties.toList: _*)))
+    return new ForEachStatement(add(new SetClause(setProperties.toList: _*)))
   }
 
   def delete(expressions: ReferenceExpression*): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new DeleteClause(expressions: _*)))
+    return new ForEachStatement(add(new DeleteClause(expressions: _*)))
   }
 
   def delete(expressions: Iterable[ReferenceExpression]): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new DeleteClause(expressions.toList: _*)))
+    return new ForEachStatement(add(new DeleteClause(expressions.toList: _*)))
   }
 
   def createUnique(expressions: PathExpression*): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new CreateUniqueClause(expressions)))
+    return new ForEachStatement(add(new CreateUniqueClause(expressions)))
   }
 
   def createUnique(expressions: Iterable[PathExpression]): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new CreateUniqueClause(expressions)))
+    return new ForEachStatement(add(new CreateUniqueClause(expressions)))
   }
 
   def forEach(statement: ForEachStatement): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(statement.getClause))
+    return new ForEachStatement(add(statement))
+  }
+
+  def add(clause: AsString): ForEachClause = {
+    forEachStatements.add(clause)
+    return this
   }
 
   def asString(builder: StringBuilder) {
-    forEachClause.asString(builder)
-  }
-
-  def getClause: Clause = {
-    return forEachClause
+    builder.append(" FOREACH(")
+    id.asString(builder)
+    builder.append(" in ")
+    in.asString(builder)
+    builder.append("|")
+    var comma: String = ""
+    import scala.collection.JavaConversions._
+    for (forEachStatement <- forEachStatements) {
+      builder.append(comma)
+      forEachStatement.asString(builder)
+      comma = ","
+    }
+    builder.append(')')
   }
 }

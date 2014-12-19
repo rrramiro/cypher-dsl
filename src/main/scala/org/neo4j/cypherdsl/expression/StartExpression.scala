@@ -19,9 +19,10 @@
  */
 package org.neo4j.cypherdsl.expression
 
+import java.lang.StringBuilder
+
 import org.neo4j.cypherdsl.Identifier
 import org.neo4j.cypherdsl.query.AbstractExpression
-import java.lang.StringBuilder
 
 /**
  * Provides the possible expressions for the START clause.

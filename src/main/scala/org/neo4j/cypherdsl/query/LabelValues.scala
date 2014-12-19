@@ -18,9 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.neo4j.cypherdsl.query
+
 import java.lang.StringBuilder
+
 //import java.lang.Iterable
-import scala.collection.JavaConversions._
+
 /**
  * Represents a collection of Label
  */

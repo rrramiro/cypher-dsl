@@ -19,9 +19,10 @@
  */
 package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.expression._
-import org.neo4j.cypherdsl.CypherQuery.literal
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.CypherQuery.literal
+import org.neo4j.cypherdsl.expression._
 
 /**
  * Handles a single value that corresponds to any expression. Optionally

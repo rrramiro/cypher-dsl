@@ -19,8 +19,10 @@
  */
 package org.neo4j.cypherdsl.query
 
-import org.neo4j.cypherdsl.expression.Expression
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl.expression.Expression
+
 /**
  * Expresses all functions of the form "f(exp)"
  */

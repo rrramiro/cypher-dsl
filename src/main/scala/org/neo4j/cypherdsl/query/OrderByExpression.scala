@@ -20,10 +20,10 @@
 package org.neo4j.cypherdsl.query
 
 
-import org.neo4j.cypherdsl._
-
-import org.neo4j.cypherdsl.expression.Expression
 import java.lang.StringBuilder
+
+import org.neo4j.cypherdsl._
+import org.neo4j.cypherdsl.expression.Expression
 
 /**
  * Provides the possible expressions for the ORDER BY clause.
