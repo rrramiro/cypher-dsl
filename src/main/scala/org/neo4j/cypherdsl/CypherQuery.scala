@@ -310,7 +310,7 @@ object CypherQuery {
    * @return
    */
   def value(id: String, valueParam: Boolean): PropertyValue = {
-    new PropertyValue(identifier(id), literal(valueParam.toString))
+    new PropertyValue(identifier(id), literal(valueParam))
   }
 
   /**

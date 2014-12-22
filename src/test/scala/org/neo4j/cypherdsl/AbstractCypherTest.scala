@@ -27,7 +27,7 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.neo4j.cypher.EntityNotFoundException
 import org.neo4j.cypher.MissingIndexException
-import org.neo4j.cypher.javacompat.ExecutionEngine
+import org.neo4j.cypher.ExecutionEngine
 import org.neo4j.graphdb.NotFoundException
 import org.neo4j.graphdb.Transaction
 import org.neo4j.graphdb.factory.GraphDatabaseSettings
@@ -70,10 +70,10 @@ abstract class AbstractCypherTest {
     AbstractCypherTest.graphdb.cleanContent
   }
 
-  protected def assertQueryEquals(expected: String, query: String) {
+  protected def assertQueryEquals(expected: String, query: String, params: Map[String, Any] = Map.empty) {
     assertEquals(expected, query)
 //    try {
-//      AbstractCypherTest.engine.execute(query)
+//      AbstractCypherTest.engine.execute(query) //params
 //    }
 //    catch {
 //      case mie: MissingIndexException => {

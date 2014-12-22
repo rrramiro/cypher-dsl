@@ -19,14 +19,9 @@
  */
 package org.neo4j.cypherdsl
 
-import org.junit.Assert.assertEquals
 import org.neo4j.cypherdsl.CypherQuery._
 import org.neo4j.cypherdsl.CypherQuery.{query => cypherQuery}
 import org.neo4j.cypherdsl.Order.DESCENDING
-import java.util.Arrays
-import java.util.HashMap
-import java.util.List
-import java.util.Map
 import org.junit.Test
 import AbstractCypherTest.CYPHER
 
@@ -356,17 +351,10 @@ class CypherReferenceTest extends AbstractCypherTest {
 
   @Test def test16_18_7 {
     val query: String = create(node("node").values(param("props"))).toString
-    assertEquals(CYPHER + "CREATE (node {props})", query)
-    val n1: Map[String, AnyRef] = new HashMap[String, AnyRef]
-    n1.put("name", "Andres")
-    n1.put("position", "Developer")
-    val n2: Map[String, AnyRef] = new HashMap[String, AnyRef]
-    n2.put("name", "Michael")
-    n2.put("position", "Developer")
-    val params: Map[String, AnyRef] = new HashMap[String, AnyRef]
-    @SuppressWarnings(Array("unchecked")) val maps: List[Map[String, AnyRef]] = Arrays.asList(n1, n2)
-    params.put("props", maps)
-    engine.execute(query, params)
+    val n1 = Map("name"-> "Andres", "position" -> "Developer")
+    val n2 = Map("name"-> "Michael", "position" -> "Developer")
+    val params = Map("props" -> List(n1, n2))
+    assertQueryEquals(CYPHER + "CREATE (node {props})", query, params)
   }
 
   @Test def test16_19_1 {
