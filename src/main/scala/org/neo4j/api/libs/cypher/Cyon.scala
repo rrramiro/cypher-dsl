@@ -1,8 +1,7 @@
 package org.neo4j.api.libs.cypher
 
-import org.neo4j.cypherdsl.{Identifier => CypherIdentifier}
-import org.neo4j.cypherdsl.CypherQuery
 import org.neo4j.cypherdsl.query.Direction
+import org.neo4j.cypherdsl.{CypherQuery, Identifier => CypherIdentifier}
 
 
 /**
@@ -21,9 +20,9 @@ object Cyon {
    *
    * @param o Value to convert in Cyon.
    */
-  def toCyon[T](o: T)(implicit tjs: WritesCyPath[T]): CyPath = tjs.writes(o)
+  def toCyon[T](o: T)(implicit tjs: WritesCyPath[T]): CyPaths = tjs.writes(o)
 
-  def stringify(cyNode: CyPath): String = {
+  def stringify(cyNode: CyPaths): String = {
     val context = new CypherBuilderContext
     asNode(cyNode.asInstanceOf[CyPaths], context)
     context.asString
@@ -31,8 +30,8 @@ object Cyon {
 
   private def asNode(cyPath: CyPaths, context: CypherBuilderContext): CypherIdentifier = {
     val idNode: CypherIdentifier = context.createNodeOrGetId(cyPath.cyNode)
-    context.paths ++= cyPath.cyRelationships.relationships.map{ rel =>
-      CypherQuery.node(idNode).relationship(rel.direction, rel.cyLabels.labels: _*).node(asNode(rel.node.asInstanceOf[CyPaths], context))
+    context.paths ++= cyPath.cyRelationships.relationships.map { rel =>
+      CypherQuery.node(idNode).relationship(rel.direction, rel.cyLabels.labels: _*).node(asNode(rel.nodes, context))
     }
     idNode
   }
@@ -43,7 +42,7 @@ object Cyon {
 
   sealed trait CyNodeWrapper extends NotNull
 
-  private case class CyNodeWrapperImpl(field: CyPath) extends CyNodeWrapper
+  private case class CyNodeWrapperImpl(field: CyPaths) extends CyNodeWrapper
 
   import scala.language.implicitConversions
 
@@ -51,15 +50,15 @@ object Cyon {
 
   implicit def toCyFieldCyNodeWrapper[T](field: T)(implicit w: WritesCyPath[T]): CyNodeWrapper = CyNodeWrapperImpl(w.writes(field))
 
-  implicit def toSeqCyFieldCyNodeWrapper[T](fields: Seq[T])(implicit w: WritesCyPath[T]): Seq[CyNodeWrapper] = fields.map{field => CyNodeWrapperImpl(w.writes(field))}
+  implicit def toSeqCyFieldCyNodeWrapper[T](fields: Seq[T])(implicit w: WritesCyPath[T]): Seq[CyNodeWrapper] = fields.map { field => CyNodeWrapperImpl(w.writes(field))}
 
-  def values(fields: (String, CyValueWrapper)*): CyValues = new CyValues(fields.map{f =>
+  def values(fields: (String, CyValueWrapper)*): CyValues = new CyValues(fields.map { f =>
     (f._1, f._2.asInstanceOf[CyValueWrapperImpl].field)
   })
 
   def out(label: String, nodes: CyNodeWrapper*): CyRelationships = {
     CyRelationships(nodes.map { node =>
-        CyRelationship(Direction.OUT, labels(label), node.asInstanceOf[CyNodeWrapperImpl].field)
+      CyRelationship(Direction.OUT, labels(label), node.asInstanceOf[CyNodeWrapperImpl].field)
     })
   }
 

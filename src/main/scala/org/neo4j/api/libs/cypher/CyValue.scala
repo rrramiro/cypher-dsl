@@ -6,15 +6,16 @@ import scala.collection._
 /**
  * Generic cypher value
  */
-sealed trait CyValue{
+sealed trait CyValue {
   type ValueType
+
   def value: ValueType
 }
 
 /**
  * Represents a Cyon null value.
  */
-case object CyNull extends CyValue{
+case object CyNull extends CyValue {
   def value = throw new Exception("CyNull")
 }
 
@@ -34,7 +35,7 @@ case object CyNull extends CyValue{
 /**
  * Represent a Cyon boolean value.
  */
-case class CyBoolean(value: Boolean) extends CyValue{
+case class CyBoolean(value: Boolean) extends CyValue {
   type ValueType = Boolean
 }
 
@@ -42,14 +43,14 @@ case class CyBoolean(value: Boolean) extends CyValue{
 /**
  * Represent a Cyon number value.
  */
-case class CyNumber(value: BigDecimal) extends CyValue{
+case class CyNumber(value: BigDecimal) extends CyValue {
   type ValueType = BigDecimal
 }
 
 /**
  * Represent a Cyon string value.
  */
-case class CyString(value: String) extends CyValue{
+case class CyString(value: String) extends CyValue {
   type ValueType = String
 }
 
@@ -60,7 +61,7 @@ case class CyString(value: String) extends CyValue{
 case class CyValues(value: Map[String, CyValue]) {
 
   def this(fields: Seq[(String, CyValue)]) = {
-    this( fields.toMap)
+    this(fields.toMap)
   }
 
   def apply(key: String) = value(key)

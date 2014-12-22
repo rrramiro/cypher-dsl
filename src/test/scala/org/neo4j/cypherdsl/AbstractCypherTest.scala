@@ -19,20 +19,13 @@
  */
 package org.neo4j.cypherdsl
 
-import org.junit.Assert.assertEquals
 import java.io.IOException
-import org.junit.After
-import org.junit.AfterClass
-import org.junit.Before
-import org.junit.BeforeClass
-import org.neo4j.cypher.EntityNotFoundException
-import org.neo4j.cypher.MissingIndexException
+
+import org.junit.Assert.assertEquals
+import org.junit.{After, AfterClass, Before, BeforeClass}
 import org.neo4j.cypher.ExecutionEngine
-import org.neo4j.graphdb.NotFoundException
 import org.neo4j.graphdb.Transaction
-import org.neo4j.graphdb.factory.GraphDatabaseSettings
-import org.neo4j.test.ImpermanentGraphDatabase
-import org.neo4j.test.TestGraphDatabaseFactory
+import org.neo4j.test.{ImpermanentGraphDatabase, TestGraphDatabaseFactory}
 
 object AbstractCypherTest {
   val CYPHER: String = "CYPHER " + "2.0" + " "
@@ -72,17 +65,17 @@ abstract class AbstractCypherTest {
 
   protected def assertQueryEquals(expected: String, query: String, params: Map[String, Any] = Map.empty) {
     assertEquals(expected, query)
-//    try {
-//      AbstractCypherTest.engine.execute(query) //params
-//    }
-//    catch {
-//      case mie: MissingIndexException => {
-//      }
-//      case enfe: EntityNotFoundException => {
-//      }
-//      case nfe: NotFoundException => {
-//      }
-//    }
+    //    try {
+    //      AbstractCypherTest.engine.execute(query) //params
+    //    }
+    //    catch {
+    //      case mie: MissingIndexException => {
+    //      }
+    //      case enfe: EntityNotFoundException => {
+    //      }
+    //      case nfe: NotFoundException => {
+    //      }
+    //    }
   }
 
   def engine = AbstractCypherTest.engine

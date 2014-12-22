@@ -21,9 +21,9 @@ package org.neo4j.cypherdsl.grammar
 
 import java.lang.{Iterable, StringBuilder}
 
-import org.neo4j.cypherdsl.{AsString, SetProperty}
 import org.neo4j.cypherdsl.expression.{PathExpression, ReferenceExpression}
 import org.neo4j.cypherdsl.query.clause._
+import org.neo4j.cypherdsl.{AsString, SetProperty}
 
 import scala.collection.JavaConversions.{asJavaIterable, iterableAsScalaIterable}
 import scala.language.implicitConversions

@@ -19,27 +19,12 @@
  */
 package org.neo4j.cypherdsl
 
-import org.junit.Assert.assertEquals
-import org.neo4j.cypherdsl.CypherQuery.allNodes
-import org.neo4j.cypherdsl.CypherQuery.as
-import org.neo4j.cypherdsl.CypherQuery.identifier
-import org.neo4j.cypherdsl.CypherQuery.identifiers
-import org.neo4j.cypherdsl.CypherQuery.literal
-import org.neo4j.cypherdsl.CypherQuery.lookup
-import org.neo4j.cypherdsl.CypherQuery.nodesById
-import org.neo4j.cypherdsl.CypherQuery.nodesByParameter
-import org.neo4j.cypherdsl.CypherQuery.not
-import org.neo4j.cypherdsl.CypherQuery.param
-import org.neo4j.cypherdsl.CypherQuery.{query => cypherquery}
-import org.neo4j.cypherdsl.CypherQuery.queryByParameter
-import org.neo4j.cypherdsl.CypherQuery.relationshipLookup
-import org.neo4j.cypherdsl.CypherQuery.relationshipsById
-import org.neo4j.cypherdsl.CypherQuery.relationshipsByParameter
-import org.neo4j.cypherdsl.CypherQuery.start
-import org.junit.Assert
-import org.junit.Test
 import java.lang.StringBuilder
-import AbstractCypherTest.CYPHER
+
+import org.junit.Assert.assertEquals
+import org.junit.{Assert, Test}
+import org.neo4j.cypherdsl.AbstractCypherTest.CYPHER
+import org.neo4j.cypherdsl.CypherQuery.{allNodes, as, identifier, identifiers, literal, lookup, nodesById, nodesByParameter, not, param, query => cypherquery, queryByParameter, relationshipLookup, relationshipsById, relationshipsByParameter, start}
 
 /**
  * Tests for all parts of the Cypher DSL.

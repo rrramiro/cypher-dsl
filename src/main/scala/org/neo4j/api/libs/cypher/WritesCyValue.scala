@@ -2,9 +2,6 @@ package org.neo4j.api.libs.cypher
 
 import scala.annotation.implicitNotFound
 
-
-import Cyon._
-
 /**
  * Cyon serializer: write an implicit to define a serializer for any type
  */
@@ -21,12 +18,12 @@ trait WritesCyValue[-A] {
   /**
    * transforms the resulting CyValue using transformer function
    */
-  def transform(transformer: CyValue => CyValue): WritesCyValue[A] = WritesCyValue[A] { a => transformer(this.writes(a)) }
+  def transform(transformer: CyValue => CyValue): WritesCyValue[A] = WritesCyValue[A] { a => transformer(this.writes(a))}
 
   /**
    * transforms resulting CyValue using Writes[CyValue]
    */
-  def transform(transformer: WritesCyValue[CyValue]): WritesCyValue[A] = WritesCyValue[A] { a => transformer.writes(this.writes(a)) }
+  def transform(transformer: WritesCyValue[CyValue]): WritesCyValue[A] = WritesCyValue[A] { a => transformer.writes(this.writes(a))}
 
 }
 

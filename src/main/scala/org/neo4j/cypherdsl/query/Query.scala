@@ -24,9 +24,9 @@ import java.io.Serializable
 import java.lang.StringBuilder
 import java.util.ArrayList
 
-import org.neo4j.cypherdsl.{AsString, Literal}
 import org.neo4j.cypherdsl.expression.Expression
 import org.neo4j.cypherdsl.query.clause.{Clause, WhereClause}
+import org.neo4j.cypherdsl.{AsString, Literal}
 
 import scala.collection.JavaConversions._
 

@@ -2,9 +2,9 @@ package org.neo4j.api.libs.cypher
 
 import java.util.concurrent.atomic.AtomicInteger
 
-import org.neo4j.cypherdsl.expression.{StartExpression, PathExpression}
+import org.neo4j.cypherdsl.expression.{PathExpression, StartExpression}
 import org.neo4j.cypherdsl.query.PropertyValue
-import org.neo4j.cypherdsl.{Identifier, CypherQuery}
+import org.neo4j.cypherdsl.{CypherQuery, Identifier}
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -14,19 +14,19 @@ import scala.collection.mutable.ListBuffer
  */
 class CypherBuilderContext {
   val counter = new AtomicInteger(0)
-  val paths : ListBuffer[PathExpression] = new ListBuffer[PathExpression]
-  val refs : ListBuffer[StartExpression] = new ListBuffer[StartExpression]
+  val paths: ListBuffer[PathExpression] = new ListBuffer[PathExpression]
+  val refs: ListBuffer[StartExpression] = new ListBuffer[StartExpression]
   val nodeMap = mutable.Map[CyPath, Identifier]()
 
   private def generateId: Identifier = CypherQuery.identifier(s"n${counter.incrementAndGet()}")
 
   def createNodeOrGetId(cyPath: CyPath): Identifier = nodeMap.getOrElseUpdate(cyPath, createNodeOrReference(cyPath))
 
-  def createNodeOrReference(cyPath: CyPath): Identifier =  {
+  def createNodeOrReference(cyPath: CyPath): Identifier = {
     val idNode = generateId
     cyPath match {
       case cyNode: CyNode =>
-        paths +=  CypherQuery.node(idNode)
+        paths += CypherQuery.node(idNode)
           .labels(cyNode.cyLabels.labels.map { l => CypherQuery.label(l)}: _*)
           .values(cyNode.cyValues.value.map { case (key, prop) => new PropertyValue(CypherQuery.identifier(key), cyValueToLiteral(prop))})
       case cyRef: CyNodeReference =>

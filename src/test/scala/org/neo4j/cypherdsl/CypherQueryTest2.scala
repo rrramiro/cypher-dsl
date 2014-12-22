@@ -20,8 +20,8 @@
 package org.neo4j.cypherdsl
 
 import org.junit.Test
+import org.neo4j.cypherdsl.AbstractCypherTest.CYPHER
 import org.neo4j.cypherdsl.CypherQuery._
-import AbstractCypherTest.CYPHER
 import org.neo4j.cypherdsl.query.Query
 
 /**
@@ -30,38 +30,38 @@ import org.neo4j.cypherdsl.query.Query
 class CypherQueryTest2 extends AbstractCypherTest {
   @Test def testDSL {
     assertQueryEquals(CYPHER + "START john=node(0) RETURN john", new CypherQuery(new Query()) {
-      starts( nodesById( "john", 0 ) ).returns( identifier( "john" ) )
+      starts(nodesById("john", 0)).returns(identifier("john"))
     }.toString)
     assertQueryEquals(CYPHER + "START john=node(0) MATCH r=(john)-[:KNOWS*1..3]->(x) RETURN x", new CypherQuery(new Query()) {
-      starts( nodesById( "john", 0 ) ).
-      `match`( path( "r", node( "john" )
-        .out( "KNOWS" )
-        .hops( 1, 3 )
-        .node( "x" ) ) ).
-      returns( identifier( "x" ) );
+      starts(nodesById("john", 0)).
+        `match`(path("r", node("john")
+        .out("KNOWS")
+        .hops(1, 3)
+        .node("x"))).
+        returns(identifier("x"));
     }.toString)
     assertQueryEquals(CYPHER + "START n=node(3,1) WHERE (n.age<30 and n.name=\"Tobias\") or not(n" + ".name=\"Tobias\") RETURN n", new CypherQuery(new Query()) {
-      starts( nodesById( "n", 3, 1 ) ).
-        where( identifier( "n" ).property( "age" ).lt( 30 ).and( identifier( "n" ).string( "name" )
-        .eq( literal("Tobias" )) )
-        .or( not( identifier( "n" ).string( "name" ).eq( literal("Tobias" ) ) ) )).
-        returns( identifier( "n" ) );
+      starts(nodesById("n", 3, 1)).
+        where(identifier("n").property("age").lt(30).and(identifier("n").string("name")
+        .eq(literal("Tobias")))
+        .or(not(identifier("n").string("name").eq(literal("Tobias"))))).
+        returns(identifier("n"));
     }.toString)
   }
 
   @Test def testAndOrPrecedence {
     assertQueryEquals(CYPHER + "START n=node(1) WHERE n.value=0 and (n.title=\"ololo\" or n.value=1) RETURN n", new CypherQuery(new Query()) {
-      starts( nodesById( "n", 1 ) ).
-        where( identifier( "n" ).number( "value" ).eq( literal(0) )
-        .and( identifier( "n" ).string( "title" ).eq( literal("ololo") ).or( identifier( "n" )
-        .number( "value" ).eq(literal( 1 )) ) ) ).
-        returns( identifier( "n" ) );
+      starts(nodesById("n", 1)).
+        where(identifier("n").number("value").eq(literal(0))
+        .and(identifier("n").string("title").eq(literal("ololo")).or(identifier("n")
+        .number("value").eq(literal(1))))).
+        returns(identifier("n"));
     }.toString)
   }
 
   @Test def testLabel {
-    assertQueryEquals(CYPHER + "CREATE (n:Person:Swedish)",  new CypherQuery(new Query()) {
-      creates( node("n").labels( label("Person"), label("Swedish") ) )
+    assertQueryEquals(CYPHER + "CREATE (n:Person:Swedish)", new CypherQuery(new Query()) {
+      creates(node("n").labels(label("Person"), label("Swedish")))
     }.toString)
   }
 

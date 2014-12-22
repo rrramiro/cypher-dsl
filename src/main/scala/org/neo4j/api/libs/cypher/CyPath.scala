@@ -1,11 +1,10 @@
 package org.neo4j.api.libs.cypher
 
 import org.neo4j.api.libs.cypher.Cyon.{CyNodeWrapper, CyValueWrapper}
-
+import org.neo4j.cypherdsl.query.Direction
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
-import org.neo4j.cypherdsl.query.Direction
 
 case class CyLabels(labels: String*) {
 
@@ -45,7 +44,7 @@ trait CyRelationshipBuilder {
   def build: CyPaths
 }
 
-class CyNodeReferenceBuilder(val key: String, val id: String) extends CyRelationshipBuilder{
+class CyNodeReferenceBuilder(val key: String, val id: String) extends CyRelationshipBuilder {
   def build = CyPaths(CyNodeReference(key, id), CyRelationships(cyRelationships))
 }
 
@@ -65,10 +64,10 @@ class CyNodeBuilder extends CyRelationshipBuilder {
     this
   }
 
-  def build = CyPaths(CyNode(CyLabels(cyLabels), new CyValues(cyValues)), CyRelationships(cyRelationships))
+  def build = CyPaths(CyNode(CyLabels(cyLabels: _*), new CyValues(cyValues)), CyRelationships(cyRelationships))
 }
 
-case class CyPaths(cyNode: CyPath, cyRelationships: CyRelationships) extends CyPath
+case class CyPaths(cyNode: CyPath, cyRelationships: CyRelationships)
 
 case class CyNode(cyLabels: CyLabels, cyValues: CyValues) extends CyPath
 
@@ -76,5 +75,5 @@ case class CyNodeReference(key: String, refId: String, index: String = "node_aut
 
 case class CyRelationships(relationships: Seq[CyRelationship])
 
-case class CyRelationship(direction: Direction.Value, cyLabels: CyLabels, node: CyPath)
+case class CyRelationship(direction: Direction.Value, cyLabels: CyLabels, nodes: CyPaths)
 

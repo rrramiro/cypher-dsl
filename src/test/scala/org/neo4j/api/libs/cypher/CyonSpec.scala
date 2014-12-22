@@ -3,20 +3,22 @@ package org.neo4j.api.libs.cypher
 
 import org.scalatest._
 
-object Movie{
-  implicit val movieWrites = new WritesCyPath[Movie]{
-    override def writes(o: Movie): CyPath = Cyon.node("Movie").values("title" -> o.title, "year" -> o.year).build
+object Movie {
+  implicit val movieWrites = new WritesCyPath[Movie] {
+    override def writes(o: Movie): CyPaths = Cyon.node("Movie").values("title" -> o.title, "year" -> o.year).build
   }
 }
+
 case class Movie(title: String, year: Int)
 
 object Actor {
-  implicit val actorWrites = new WritesCyPath[Actor]{
-    override def writes(o: Actor): CyPath = Cyon.node("Actor").values("name" -> o.name).out(
+  implicit val actorWrites = new WritesCyPath[Actor] {
+    override def writes(o: Actor): CyPaths = Cyon.node("Actor").values("name" -> o.name).out(
       "PLAY_IN", o.movies: _*
     ).build
   }
 }
+
 case class Actor(name: String, movies: Movie*)
 
 
@@ -33,19 +35,20 @@ class CyonSpec extends FlatSpec with Matchers {
       "property8" -> 5.asInstanceOf[Byte],
       "property9" -> 5.asInstanceOf[Short]
     )
-    valuesObj("property1") should be (CyString("text"))
-    valuesObj("property2") should be (CyNumber(22))
-    valuesObj("property3") should be (CyString("c"))
-    valuesObj("property7") should be (CyBoolean(value = true))
-    valuesObj("property9") should be (CyNumber(5))
+    valuesObj("property1") should be(CyString("text"))
+    valuesObj("property2") should be(CyNumber(22))
+    valuesObj("property3") should be(CyString("c"))
+    valuesObj("property7") should be(CyBoolean(value = true))
+    valuesObj("property9") should be(CyNumber(5))
   }
 
-  it should "init relatiohship for a node" in { //
+  it should "init relatiohship for a node" in {
+    //
     val actor = Actor("Johnny Depp", Movie("Pirates of the Caribbean: The Curse of the Black Pearl", 2003), Movie("Pirates of the Caribbean: Dead Man's Chest", 2006))
 
-    val cypher =  Cyon.stringify(Cyon.toCyon(actor))
+    val cypher = Cyon.stringify(Cyon.toCyon(actor))
 
-    cypher should be (s"""CYPHER 2.0 CREATE (n1:Actor {name:"Johnny Depp"}),(n2:Movie {title:"Pirates of the Caribbean: The Curse of the Black Pearl",year:2003}),(n3:Movie {title:"Pirates of the Caribbean: Dead Man's Chest",year:2006}),(n1)-[:PLAY_IN]->(n2),(n1)-[:PLAY_IN]->(n3)""")
+    cypher should be( s"""CYPHER 2.0 CREATE (n1:Actor {name:"Johnny Depp"}),(n2:Movie {title:"Pirates of the Caribbean: The Curse of the Black Pearl",year:2003}),(n3:Movie {title:"Pirates of the Caribbean: Dead Man's Chest",year:2006}),(n1)-[:PLAY_IN]->(n2),(n1)-[:PLAY_IN]->(n3)""")
 
   }
 

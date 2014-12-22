@@ -23,9 +23,9 @@ import javax.annotation.Nullable
 
 import com.mysema.query.lucene.LuceneSerializer
 import com.mysema.query.types.{Constant, Expression => MysemaExpression, FactoryExpression, Operation, Ops, ParamExpression, Path, Predicate, SubQueryExpression, TemplateExpression, Visitor}
-import org.neo4j.cypherdsl.{CypherQuery, Identifier, Property}
 import org.neo4j.cypherdsl.expression.{BooleanExpression, Expression, NumericExpression, StringExpression}
 import org.neo4j.cypherdsl.query.Value
+import org.neo4j.cypherdsl.{CypherQuery, Identifier, Property}
 
 /**
  * Methods here are used to integrate Cypher DSL with the QueryDSL library. Create QBeans with QueryDSL

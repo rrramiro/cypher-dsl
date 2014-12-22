@@ -19,11 +19,10 @@
  */
 package org.neo4j.cypherdsl
 
-import org.neo4j.cypherdsl.CypherQuery._
-import org.neo4j.cypherdsl.CypherQuery.{query => cypherQuery}
-import org.neo4j.cypherdsl.Order.DESCENDING
 import org.junit.Test
-import AbstractCypherTest.CYPHER
+import org.neo4j.cypherdsl.AbstractCypherTest.CYPHER
+import org.neo4j.cypherdsl.CypherQuery.{query => cypherQuery, _}
+import org.neo4j.cypherdsl.Order.DESCENDING
 
 /**
  * Construct Cypher queries corresponding to the Cypher Reference manual
@@ -351,8 +350,8 @@ class CypherReferenceTest extends AbstractCypherTest {
 
   @Test def test16_18_7 {
     val query: String = create(node("node").values(param("props"))).toString
-    val n1 = Map("name"-> "Andres", "position" -> "Developer")
-    val n2 = Map("name"-> "Michael", "position" -> "Developer")
+    val n1 = Map("name" -> "Andres", "position" -> "Developer")
+    val n2 = Map("name" -> "Michael", "position" -> "Developer")
     val params = Map("props" -> List(n1, n2))
     assertQueryEquals(CYPHER + "CREATE (node {props})", query, params)
   }

@@ -14,7 +14,7 @@ trait WritesCyPath[-A] {
   /**
    * Convert the object into a CyNode
    */
-  def writes(o: A): CyPath
+  def writes(o: A): CyPaths
 
 }
 
@@ -23,14 +23,14 @@ trait WritesCyPath[-A] {
 )
 trait OWrites[-A] extends WritesCyPath[A] {
 
-  def writes(o: A): CyPath
+  def writes(o: A): CyPaths
 
 }
 
 object OWrites {
 
-  def apply[A](f: A => CyPath): OWrites[A] = new OWrites[A] {
-    def writes(a: A): CyPath = f(a)
+  def apply[A](f: A => CyPaths): OWrites[A] = new OWrites[A] {
+    def writes(a: A): CyPaths = f(a)
   }
 
 }
@@ -41,9 +41,9 @@ object OWrites {
 object WritesCyPath extends DefaultWritesCyNode {
 
 
-  def apply[A](f: A => CyPath): WritesCyPath[A] = new WritesCyPath[A] {
+  def apply[A](f: A => CyPaths): WritesCyPath[A] = new WritesCyPath[A] {
 
-    def writes(a: A): CyPath = f(a)
+    def writes(a: A): CyPaths = f(a)
 
   }
 
@@ -66,8 +66,8 @@ trait DefaultWritesCyNode {
   /**
    * Serializer for CyNodes.
    */
-  implicit object cyPathsWritesCyPaths extends WritesCyPath[CyPath] {
-    def writes(o: CyPath) = o
+  implicit object cyPathsWritesCyPaths extends WritesCyPath[CyPaths] {
+    def writes(o: CyPaths) = o
   }
 
   /**
@@ -76,9 +76,8 @@ trait DefaultWritesCyNode {
   implicit def OptionWrites[T](implicit fmt: WritesCyPath[T]): WritesCyPath[Option[T]] = new WritesCyPath[Option[T]] {
     def writes(o: Option[T]) = o match {
       case Some(value) => fmt.writes(value)
-      case None => CyPathNull
+      case None => CyPaths(CyPathNull, CyRelationships(List.empty))
     }
   }
-
 
 }

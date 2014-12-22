@@ -22,9 +22,9 @@ package org.neo4j.cypherdsl.query.clause
 import java.lang.{Iterable, StringBuilder}
 import java.util.{ArrayList, List}
 
-import org.neo4j.cypherdsl.{AsString, Identifier, SetProperty}
 import org.neo4j.cypherdsl.expression.{Expression, PathExpression, ReferenceExpression}
 import org.neo4j.cypherdsl.grammar.{ForEachStatement, ForEachStatements}
+import org.neo4j.cypherdsl.{AsString, Identifier, SetProperty}
 
 import scala.collection.JavaConversions.{asJavaIterable, iterableAsScalaIterable}
 import scala.language.implicitConversions

@@ -19,20 +19,15 @@
  */
 package org.neo4j.cypherdsl.querydsl
 
-import org.neo4j.cypherdsl.CypherQuery.as
-import org.neo4j.cypherdsl.CypherQuery.identifier
-import org.neo4j.cypherdsl.CypherQuery.lookup
-import org.neo4j.cypherdsl.CypherQuery.node
-import org.neo4j.cypherdsl.CypherQuery.start
-import org.neo4j.cypherdsl.query.neo4j.StartExpressionNeo.nodeById
 import java.io.IOException
 import java.util.Map
-import org.junit.{Ignore, Before, Rule, Test}
-import org.neo4j.cypher.javacompat.ExecutionEngine
-import org.neo4j.cypher.javacompat.ExecutionResult
+
+import org.junit.{Before, Ignore, Rule, Test}
+import org.neo4j.cypher.javacompat.{ExecutionEngine, ExecutionResult}
+import org.neo4j.cypherdsl.CypherQuery.{as, identifier, lookup, node, start}
 import org.neo4j.cypherdsl.grammar.Execute
-import org.neo4j.graphdb.GraphDatabaseService
-import org.neo4j.graphdb.Node
+import org.neo4j.cypherdsl.query.neo4j.StartExpressionNeo.nodeById
+import org.neo4j.graphdb.{GraphDatabaseService, Node}
 import org.neo4j.test._
 
 /**
@@ -51,7 +46,6 @@ class Friend {
 }
 
 
-
 class ProjectionTest extends GraphHolder {
   var data: TestData[Map[String, Node]] = TestData.producedThrough(GraphDescription.createGraphFor(this, true))
   private var graphdbRef: ImpermanentGraphDatabase = null
@@ -60,7 +54,8 @@ class ProjectionTest extends GraphHolder {
   @Rule
   def getData = data
 
-  @Test @Ignore
+  @Test
+  @Ignore
   @GraphDescription.Graph(value = Array("John friend Sara", "John friend Joe", "Sara friend Maria", "Joe friend Steve"), autoIndexNodes = true)
   @throws(classOf[Exception])
   def testCypherExecution {

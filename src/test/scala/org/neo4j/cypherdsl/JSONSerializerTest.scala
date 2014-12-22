@@ -19,25 +19,16 @@
  */
 package org.neo4j.cypherdsl
 
-import org.neo4j.cypherdsl.CypherQuery.as
-import org.neo4j.cypherdsl.CypherQuery.count
-import org.neo4j.cypherdsl.CypherQuery.identifier
-import org.neo4j.cypherdsl.CypherQuery.lookup
-import org.neo4j.cypherdsl.CypherQuery.node
-import org.neo4j.cypherdsl.CypherQuery.path
-import org.neo4j.cypherdsl.CypherQuery.shortestPath
-import org.neo4j.cypherdsl.CypherQuery.start
 import java.io.IOException
 import java.util.Map
-import org.junit.{Ignore, Before, Rule, Test}
+
+import org.junit.{Before, Ignore, Rule, Test}
 import org.neo4j.cypher.javacompat.ExecutionEngine
+import org.neo4j.cypherdsl.CypherQuery.{as, count, identifier, lookup, node, path, shortestPath, start}
 import org.neo4j.cypherdsl.result.JSONSerializer
-import org.neo4j.graphdb.GraphDatabaseService
-import org.neo4j.graphdb.Node
-import org.neo4j.graphdb.Transaction
+import org.neo4j.graphdb.{GraphDatabaseService, Node, Transaction}
 import org.neo4j.test._
-import scala.beans.BeanProperty
-import scala.collection.JavaConversions.asJavaIterable
+
 import scala.language.implicitConversions
 
 /**
@@ -52,7 +43,8 @@ class JSONSerializerTest extends GraphHolder {
   private var graphdbRef: ImpermanentGraphDatabase = null
   private var engine: ExecutionEngine = null
 
-  @Test @Ignore
+  @Test
+  @Ignore
   @GraphDescription.Graph(value = Array("John friend Sara", "John friend Joe", "Sara friend Maria", "Joe friend Steve"), autoIndexNodes = true) def testJSONSerialization {
     data.get
     val serializer: JSONSerializer = new JSONSerializer
@@ -69,7 +61,8 @@ class JSONSerializerTest extends GraphHolder {
     }
   }
 
-  @Test @Ignore
+  @Test
+  @Ignore
   @GraphDescription.Graph(value = Array("John friend Sara", "John friend Joe", "Sara friend Maria", "Joe friend Steve"), autoIndexNodes = true) def testIterableJSONSerialization {
     data.get
     val serializer: JSONSerializer = new JSONSerializer
