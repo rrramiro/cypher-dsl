@@ -27,7 +27,7 @@ import org.neo4j.cypherdsl.expression.{BooleanExpression, CollectionExpression}
 /**
  * Represents a filter function
  */
-class Filter(name: Identifier, iterable: CollectionExpression, predicate: BooleanExpression) extends AbstractExpression {
+case class Filter(name: Identifier, iterable: CollectionExpression, predicate: BooleanExpression) extends AbstractExpression {
 
   def asString(builder: StringBuilder) {
     builder.append("filter").append('(')

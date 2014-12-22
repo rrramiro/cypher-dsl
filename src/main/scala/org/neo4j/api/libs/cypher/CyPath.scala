@@ -1,35 +1,69 @@
 package org.neo4j.api.libs.cypher
 
-import org.neo4j.api.libs.cypher.Cyon.CyValueWrapper
-
-object Direction extends Enumeration {
-  type Direction = Value
-  val IN, OUT, BOTH = Value
-}
-
-case class CyPaths(paths: CyPath*){
-
-}
-
-sealed trait CyPath
+import org.neo4j.api.libs.cypher.Cyon.{CyNodeWrapper, CyValueWrapper}
 
 
-case class CyNode(cyValues: CyValues, cyLabels: CyLabels) extends CyPath {
-  def values(fields: (String, CyValueWrapper)*) = new CyNode(Cyon.values(fields: _*), cyLabels)
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
+import org.neo4j.cypherdsl.query.Direction
 
-  def out(cyLabels: CyLabels, cyValues: CyValues, nodes: CyNode*) = CyPaths(nodes.map{
-    node => CyRelationship(cyValues, cyLabels, Direction.OUT, this, node)
-  })
-
-  def in(cyLabels: CyLabels, cyValues: CyValues, nodes: CyNode*) = CyPaths(nodes.map{
-    node => CyRelationship(cyValues, cyLabels, Direction.IN, node, this)
-  })
-
-  def both(cyLabels: CyLabels, cyValues: CyValues, nodes: CyNode*) = CyPaths(nodes.map{
-    node => CyRelationship(cyValues, cyLabels, Direction.BOTH, this, node)
-  })
+case class CyLabels(labels: String*) {
 
 }
 
 
-case class CyRelationship(cyValues: CyValues, cyLabels: CyLabels, direction: Direction.Value, left: CyNode, right: CyNode) extends CyPath
+sealed trait CyPath {
+
+}
+
+
+/**
+ * Represents a Cyon null value.
+ */
+case object CyPathNull extends CyPath {
+
+}
+
+
+class CyNodeBuilder  {
+
+  var cyLabels: ListBuffer[String] = new ListBuffer[String]
+  var cyValues = mutable.Seq[(String, CyValue)]()
+  var cyRelationships: ListBuffer[CyRelationship] = new ListBuffer[CyRelationship]
+
+  def labels(labels: String*) = {
+    this.cyLabels ++= labels
+    this
+  }
+
+  def values(fields: (String, CyValueWrapper)*) = {
+    this.cyValues ++= Cyon.values(fields: _*).fieldSet
+    this
+  }
+
+  def out(label: String, nodes: CyNodeWrapper*) = {
+    this.cyRelationships ++= Cyon.out(label, nodes: _*).relationships
+    this
+  }
+
+  def in(label: String, nodes: CyNodeWrapper*) = {
+    this.cyRelationships ++= Cyon.in(label, nodes: _*).relationships
+    this
+  }
+
+  def both(label: String, nodes: CyNodeWrapper*) = {
+    this.cyRelationships ++= Cyon.both(label, nodes: _*).relationships
+    this
+  }
+
+  def build = CyPaths(CyNode(CyLabels(cyLabels: _*), new CyValues(cyValues)), CyRelationships(cyRelationships))
+
+}
+
+case class CyPaths(cyNode: CyNode, cyRelationships: CyRelationships) extends CyPath
+
+case class CyNode(cyLabels: CyLabels, cyValues: CyValues) extends CyPath
+
+case class CyRelationships(relationships: Seq[CyRelationship])
+
+case class CyRelationship(direction: Direction.Value, cyLabels: CyLabels, node: CyPath)

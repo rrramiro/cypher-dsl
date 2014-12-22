@@ -3,7 +3,22 @@ package org.neo4j.api.libs.cypher
 
 import org.scalatest._
 
-import Cyon.node
+object Movie{
+  implicit val movieWrites = new WritesCyPath[Movie]{
+    override def writes(o: Movie): CyPath = Cyon.node("Movie").values("title" -> o.title, "year" -> o.year).build
+  }
+}
+case class Movie(title: String, year: Int)
+
+object Actor {
+  implicit val actorWrites = new WritesCyPath[Actor]{
+    override def writes(o: Actor): CyPath = Cyon.node("Actor").values("name" -> o.name).out(
+      "PLAY_IN", o.movies: _*
+    ).build
+  }
+}
+case class Actor(name: String, movies: Movie*)
+
 
 class CyonSpec extends FlatSpec with Matchers {
   it should "init values for a node" in {
@@ -25,8 +40,13 @@ class CyonSpec extends FlatSpec with Matchers {
     valuesObj("property9") should be (CyNumber(5))
   }
 
-  it should "init a node with labels" in {
-    val newNode: CyNode = node("Label1", "Label2").values("prop1" -> "text").out("CONTAINS", node("LabelA"))
-    newNode should be (CyNode(CyValues(Map("prop1" -> CyString("text"))), CyLabels("Label1", "Label2")))
+  it should "init relatiohship for a node" in { //
+    val actor = Actor("Johnny Depp", Movie("Pirates of the Caribbean: The Curse of the Black Pearl", 2003), Movie("Pirates of the Caribbean: Dead Man's Chest", 2006))
+
+    val cypher =  Cyon.stringify(Cyon.toCyon(actor))
+
+    cypher should be (s"""CYPHER 2.0 CREATE (n1:Actor {name:"Johnny Depp"}),(n2:Movie {title:"Pirates of the Caribbean: The Curse of the Black Pearl",year:2003}),(n3:Movie {title:"Pirates of the Caribbean: Dead Man's Chest",year:2006}),(n1)-[:PLAY_IN]->(n2),(n1)-[:PLAY_IN]->(n3)""")
+
   }
+
 }

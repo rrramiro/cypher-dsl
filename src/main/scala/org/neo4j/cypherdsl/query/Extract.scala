@@ -27,7 +27,7 @@ import org.neo4j.cypherdsl.expression.{CollectionExpression, ScalarExpression}
 /**
  * Represents an extract function
  */
-class Extract(name: Identifier, iterable: CollectionExpression, expression: ScalarExpression) extends AbstractExpression {
+case class Extract(name: Identifier, iterable: CollectionExpression, expression: ScalarExpression) extends AbstractExpression {
 
 
   def asString(builder: StringBuilder) {

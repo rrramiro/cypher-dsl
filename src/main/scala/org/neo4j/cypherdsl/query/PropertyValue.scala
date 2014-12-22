@@ -27,7 +27,7 @@ import org.neo4j.cypherdsl.expression.Expression
 /**
  * Represents matching a property to a value
  */
-class PropertyValue(id: Identifier, value: Expression) extends AsString {
+case class PropertyValue(id: Identifier, value: Expression) extends AsString {
 
 
   def asString(builder: StringBuilder) {

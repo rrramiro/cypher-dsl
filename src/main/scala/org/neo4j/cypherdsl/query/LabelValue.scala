@@ -26,7 +26,7 @@ import org.neo4j.cypherdsl.Identifier
 /**
  * Represents matching a label to a value
  */
-class LabelValue(label: Identifier) extends AbstractExpression {
+case class LabelValue(label: Identifier) extends AbstractExpression {
 
   def asString(builder: StringBuilder) {
     builder.append(":")

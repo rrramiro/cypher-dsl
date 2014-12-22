@@ -41,132 +41,132 @@ class Value(val value: Expression) extends AbstractExpression with ScalarExpress
 
   def add(expression: Number): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "+"), literal(expression))
+    new Value(new Operator(this, "+"), literal(expression))
   }
 
   def add(expression: NumericExpression): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "+"), expression)
+    new Value(new Operator(this, "+"), expression)
   }
 
   def subtract(expression: Number): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "-"), literal(expression))
+    new Value(new Operator(this, "-"), literal(expression))
   }
 
   def subtract(expression: NumericExpression): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "-"), expression)
+    new Value(new Operator(this, "-"), expression)
   }
 
   def times(expression: Number): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "*"), literal(expression))
+    new Value(new Operator(this, "*"), literal(expression))
   }
 
   def times(expression: NumericExpression): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "*"), expression)
+    new Value(new Operator(this, "*"), expression)
   }
 
   def divideBy(expression: Number): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "/"), literal(expression))
+    new Value(new Operator(this, "/"), literal(expression))
   }
 
   def divideBy(expression: NumericExpression): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "/"), expression)
+    new Value(new Operator(this, "/"), expression)
   }
 
   def mod(expression: Number): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "%"), literal(expression))
+    new Value(new Operator(this, "%"), literal(expression))
   }
 
   def mod(expression: NumericExpression): NumericExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "%"), expression)
+    new Value(new Operator(this, "%"), expression)
   }
 
   def gt(expression: Number): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, ">"), literal(expression))
+    new Value(new Operator(this, ">"), literal(expression))
   }
 
   def lt(expression: Number): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "<"), literal(expression))
+    new Value(new Operator(this, "<"), literal(expression))
   }
 
   def gte(expression: Number): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, ">="), literal(expression))
+    new Value(new Operator(this, ">="), literal(expression))
   }
 
   def lte(expression: Number): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "<="), literal(expression))
+    new Value(new Operator(this, "<="), literal(expression))
   }
 
   def gt(expression: NumericExpression): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, ">"), expression)
+    new Value(new Operator(this, ">"), expression)
   }
 
   def lt(expression: NumericExpression): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "<"), expression)
+    new Value(new Operator(this, "<"), expression)
   }
 
   def gte(expression: NumericExpression): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, ">="), expression)
+    new Value(new Operator(this, ">="), expression)
   }
 
   def lte(expression: NumericExpression): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "<="), expression)
+    new Value(new Operator(this, "<="), expression)
   }
 
   def gt(expression: String): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, ">"), literal(expression))
+    new Value(new Operator(this, ">"), literal(expression))
   }
 
   def gt(expression: StringExpression): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, ">"), expression)
+    new Value(new Operator(this, ">"), expression)
   }
 
   def gte(expression: String): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, ">="), literal(expression))
+    new Value(new Operator(this, ">="), literal(expression))
   }
 
   def gte(expression: StringExpression): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, ">="), expression)
+    new Value(new Operator(this, ">="), expression)
   }
 
   def lt(expression: String): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "<"), literal(expression))
+    new Value(new Operator(this, "<"), literal(expression))
   }
 
   def lt(expression: StringExpression): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "<"), expression)
+    new Value(new Operator(this, "<"), expression)
   }
 
   def lte(expression: String): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "<="), literal(expression))
+    new Value(new Operator(this, "<="), literal(expression))
   }
 
   def lte(expression: StringExpression): BooleanExpression = {
     Query.checkNull(expression, "Expression")
-    return new Value(new Operator(this, "<="), expression)
+    new Value(new Operator(this, "<="), expression)
   }
 
   /**
@@ -179,11 +179,11 @@ class Value(val value: Expression) extends AbstractExpression with ScalarExpress
    * @return
    */
   def regexp(regexp: String): BooleanExpression = {
-    return new Value(new Operator(this, "=~"), literal(regexp))
+    new Value(new Operator(this, "=~"), literal(regexp))
   }
 
   def regexp(regexp: StringExpression): BooleanExpression = {
-    return new Value(new Operator(this, "=~"), regexp)
+    new Value(new Operator(this, "=~"), regexp)
   }
 
   /**
@@ -198,19 +198,19 @@ class Value(val value: Expression) extends AbstractExpression with ScalarExpress
    */
   def regexp(regexpStr: String, caseSensitive: Boolean): BooleanExpression = {
     if (caseSensitive) {
-      return regexp(regexpStr)
+      regexp(regexpStr)
     }
     else {
-      return new Value(new Operator(this, "=~"), literal("(?i)" + regexpStr))
+      new Value(new Operator(this, "=~"), literal("(?i)" + regexpStr))
     }
   }
 
   def concat(expression: String): StringExpression = {
-    return new Value(new Operator(this, "+"), literal(expression))
+    new Value(new Operator(this, "+"), literal(expression))
   }
 
   def concat(expression: StringExpression): StringExpression = {
-    return new Value(new Operator(this, "+"), expression)
+    new Value(new Operator(this, "+"), expression)
   }
 
   def asString(builder: StringBuilder) {
@@ -221,6 +221,6 @@ class Value(val value: Expression) extends AbstractExpression with ScalarExpress
   }
 
   override def toString: String = {
-    return value.toString
+    value.toString
   }
 }

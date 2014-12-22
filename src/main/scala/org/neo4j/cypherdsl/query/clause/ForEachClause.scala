@@ -37,44 +37,44 @@ class ForEachClause(id: Identifier, in: Expression) extends Clause with AsString
 
 
   def create(paths: PathExpression*): ForEachStatement = {
-    return new ForEachStatement(add(new CreateClause(paths: _*)))
+    new ForEachStatement(add(new CreateClause(paths: _*)))
   }
 
   def create(paths: Iterable[PathExpression]): ForEachStatement = {
-    return new ForEachStatement(add(new CreateClause(paths.toList: _*)))
+    new ForEachStatement(add(new CreateClause(paths.toList: _*)))
   }
 
   def set(setProperties: SetProperty*): ForEachStatement = {
-    return new ForEachStatement(add(new SetClause(setProperties: _*)))
+    new ForEachStatement(add(new SetClause(setProperties: _*)))
   }
 
   def set(setProperties: Iterable[SetProperty]): ForEachStatement = {
-    return new ForEachStatement(add(new SetClause(setProperties.toList: _*)))
+    new ForEachStatement(add(new SetClause(setProperties.toList: _*)))
   }
 
   def delete(expressions: ReferenceExpression*): ForEachStatement = {
-    return new ForEachStatement(add(new DeleteClause(expressions: _*)))
+    new ForEachStatement(add(new DeleteClause(expressions: _*)))
   }
 
   def delete(expressions: Iterable[ReferenceExpression]): ForEachStatement = {
-    return new ForEachStatement(add(new DeleteClause(expressions.toList: _*)))
+    new ForEachStatement(add(new DeleteClause(expressions.toList: _*)))
   }
 
   def createUnique(expressions: PathExpression*): ForEachStatement = {
-    return new ForEachStatement(add(new CreateUniqueClause(expressions)))
+    new ForEachStatement(add(new CreateUniqueClause(expressions)))
   }
 
   def createUnique(expressions: Iterable[PathExpression]): ForEachStatement = {
-    return new ForEachStatement(add(new CreateUniqueClause(expressions)))
+    new ForEachStatement(add(new CreateUniqueClause(expressions)))
   }
 
   def forEach(statement: ForEachStatement): ForEachStatement = {
-    return new ForEachStatement(add(statement))
+    new ForEachStatement(add(statement))
   }
 
   def add(clause: AsString): ForEachClause = {
     forEachStatements.add(clause)
-    return this
+    this
   }
 
   def asString(builder: StringBuilder) {

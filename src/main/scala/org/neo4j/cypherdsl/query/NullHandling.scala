@@ -22,7 +22,7 @@ package org.neo4j.cypherdsl.query
 /**
  * Null handling for property references
  */
-object NullHandling extends Enumeration {
+case object NullHandling extends Enumeration {
   type NullHandling = Value
   val NULL, TRUE_IF_MISSING, FALSE_IF_MISSING = Value
 }

@@ -29,7 +29,7 @@ import scala.language.implicitConversions
 /**
  * CREATE UNIQUE clause
  */
-class CreateUniqueClause(expressionsParameter: Iterable[PathExpression]) extends Clause {
+case class CreateUniqueClause(expressionsParameter: Iterable[PathExpression]) extends Clause {
   val expressions = expressionsParameter.toList
 
   def asString(builder: StringBuilder) {

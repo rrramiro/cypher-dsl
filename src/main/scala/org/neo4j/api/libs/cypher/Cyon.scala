@@ -1,8 +1,8 @@
 package org.neo4j.api.libs.cypher
 
-
-
-
+import org.neo4j.cypherdsl.{Identifier => CypherIdentifier}
+import org.neo4j.cypherdsl.CypherQuery
+import org.neo4j.cypherdsl.query.Direction
 
 
 /**
@@ -10,49 +10,67 @@ package org.neo4j.api.libs.cypher
  */
 object Cyon {
 
-  def node(labels: String*) = CyNode.apply(CyValues.apply(Map.empty), new CyLabels(labels: _*))
+  def node(cyLabels: String*) = new CyNodeBuilder().labels(cyLabels: _*)
+
+  def labels(cyLabels: String*) = new CyLabels(cyLabels: _*)
 
   /**
    * Provided a Writes implicit for its type is available, convert any object into a CyValue.
    *
    * @param o Value to convert in Cyon.
    */
-  def toCyon[T](o: T)(implicit tjs: Writes[T]): CyValue = tjs.writes(o)
+  def toCyon[T](o: T)(implicit tjs: WritesCyPath[T]): CyPath = tjs.writes(o)
 
-  def stringify(cypher: CyValue): String = ""
+  def stringify(cyNode: CyPath): String = {
+    val context = new CypherBuilderContext
+    asNode(cyNode.asInstanceOf[CyPaths], context)
+    context.asString
+  }
 
-  /**
-   * Next is the trait that allows Simplified Cyon syntax :
-   *
-   * Example :
-   * {{{
-   * CyObject(Seq(
-   *    "key1", CyString("value"),
-   *    "key2" -> CyNumber(123),
-   *    "key3" -> CyObject(Seq("key31" -> CyString("value31")))
-   * )) == Cyon.obj( "key1" -> "value", "key2" -> 123, "key3" -> obj("key31" -> "value31"))
-   *
-   * CyArray(CyString("value"), CyNumber(123), CyBoolean(true)) == Cyon.arr( "value", 123, true )
-   * }}}
-   *
-   * There is an implicit conversion from any Type with a Cyon Writes to CyValueWrapper
-   * which is an empty trait that shouldn't end into unexpected implicit conversions.
-   *
-   * Something to note due to `CyValueWrapper` extending `NotNull` :
-   * `null` or `None` will end into compiling error : use CyNull instead.
-   */
+  private def asNode(cyPath: CyPaths, context: CypherBuilderContext): CypherIdentifier = {
+    val idNode: CypherIdentifier = context.createNodeOrGetId(cyPath.cyNode)
+    context.paths ++= cyPath.cyRelationships.relationships.map{ rel =>
+      CypherQuery.node(idNode).relationship(rel.direction, rel.cyLabels.labels: _*).node(asNode(rel.node.asInstanceOf[CyPaths], context))
+    }
+    idNode
+  }
+
   sealed trait CyValueWrapper extends NotNull
 
   private case class CyValueWrapperImpl(field: CyValue) extends CyValueWrapper
 
+  sealed trait CyNodeWrapper extends NotNull
+
+  private case class CyNodeWrapperImpl(field: CyPath) extends CyNodeWrapper
+
   import scala.language.implicitConversions
 
-  implicit def toCyFieldCyValueWrapper[T](field: T)(implicit w: Writes[T]): CyValueWrapper = CyValueWrapperImpl(w.writes(field))
+  implicit def toCyFieldCyValueWrapper[T](field: T)(implicit w: WritesCyValue[T]): CyValueWrapper = CyValueWrapperImpl(w.writes(field))
+
+  implicit def toCyFieldCyNodeWrapper[T](field: T)(implicit w: WritesCyPath[T]): CyNodeWrapper = CyNodeWrapperImpl(w.writes(field))
+
+  implicit def toSeqCyFieldCyNodeWrapper[T](fields: Seq[T])(implicit w: WritesCyPath[T]): Seq[CyNodeWrapper] = fields.map{field => CyNodeWrapperImpl(w.writes(field))}
 
   def values(fields: (String, CyValueWrapper)*): CyValues = new CyValues(fields.map{f =>
     (f._1, f._2.asInstanceOf[CyValueWrapperImpl].field)
   })
 
+  def out(label: String, nodes: CyNodeWrapper*): CyRelationships = {
+    CyRelationships(nodes.map { node =>
+        CyRelationship(Direction.OUT, labels(label), node.asInstanceOf[CyNodeWrapperImpl].field)
+    })
+  }
 
+  def in(label: String, nodes: CyNodeWrapper*): CyRelationships = {
+    CyRelationships(nodes.map { node =>
+      CyRelationship(Direction.IN, labels(label), node.asInstanceOf[CyNodeWrapperImpl].field)
+    })
+  }
+
+  def both(label: String, nodes: CyNodeWrapper*): CyRelationships = {
+    CyRelationships(nodes.map { node =>
+      CyRelationship(Direction.BOTH, labels(label), node.asInstanceOf[CyNodeWrapperImpl].field)
+    })
+  }
 
 }

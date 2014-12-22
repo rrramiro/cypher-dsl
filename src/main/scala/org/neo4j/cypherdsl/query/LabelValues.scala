@@ -26,7 +26,7 @@ import java.lang.StringBuilder
 /**
  * Represents a collection of Label
  */
-class LabelValues(labels: Iterable[LabelValue]) extends AbstractExpression {
+case class LabelValues(labels: Iterable[LabelValue]) extends AbstractExpression {
 
   def asString(builder: StringBuilder) {
 

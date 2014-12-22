@@ -28,11 +28,11 @@ import org.neo4j.cypherdsl.expression.Expression
 /**
  * Provides the possible expressions for the ORDER BY clause.
  */
-class OrderByExpression(expression: Expression, order: Order.Value) extends AbstractExpression {
+case class OrderByExpression(expression: Expression, order: Order.Value) extends AbstractExpression {
 
 
   def order(order: Order.Value): OrderByExpression = {
-    return new OrderByExpression(expression, order)
+    new OrderByExpression(expression, order)
   }
 
   def asString(builder: StringBuilder) {
@@ -49,6 +49,6 @@ class OrderByExpression(expression: Expression, order: Order.Value) extends Abst
 
   @throws(classOf[CloneNotSupportedException])
   override def clone: AnyRef = {
-    return super.clone
+    super.clone
   }
 }

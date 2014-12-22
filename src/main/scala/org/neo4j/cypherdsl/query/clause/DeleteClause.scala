@@ -28,7 +28,7 @@ import scala.language.implicitConversions
 /**
  * CREATE clause
  */
-class DeleteClause(expressionsParameter: ReferenceExpression*) extends Clause {
+case class DeleteClause(expressionsParameter: ReferenceExpression*) extends Clause {
   val expressions = expressionsParameter.toList
 
   def asString(builder: StringBuilder) {

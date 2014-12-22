@@ -24,7 +24,7 @@ import java.lang.StringBuilder
 /**
  * Represents a collection of expressions
  */
-class ExpressionCollection(expressions: Expressions) extends AbstractExpression {
+case class ExpressionCollection(expressions: Expressions) extends AbstractExpression {
 
   def asString(builder: StringBuilder) {
     builder.append("[")

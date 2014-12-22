@@ -27,7 +27,7 @@ import org.neo4j.cypherdsl.expression.PathExpression
 /**
  * Represents a named path.
  */
-class NamedPath(identifier: Identifier, path: PathExpression) extends AbstractExpression with PathExpression {
+case class NamedPath(identifier: Identifier, path: PathExpression) extends AbstractExpression with PathExpression {
 
   def asString(builder: StringBuilder) {
     identifier.asString(builder)

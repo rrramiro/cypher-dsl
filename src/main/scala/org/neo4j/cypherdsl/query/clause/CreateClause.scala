@@ -28,7 +28,7 @@ import scala.language.implicitConversions
 /**
  * CREATE clause
  */
-class CreateClause(expressionsParameter: PathExpression*) extends Clause {
+case class CreateClause(expressionsParameter: PathExpression*) extends Clause {
   val expressions = expressionsParameter.toList
 
   def asString(builder: StringBuilder) {

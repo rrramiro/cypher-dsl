@@ -29,7 +29,7 @@ import org.neo4j.cypherdsl.expression.Expression
  * Represents the left part and the operator in an operation. E.g. 1 + 2 -> 1 and + are handled here. This is used
  * with a Value that holds an Operator and deals with the 2.
  */
-class Operator(operator: String) extends AsString with Serializable {
+case class Operator(operator: String) extends AsString with Serializable {
   var left: Expression = null
 
   def this(left: Expression, operator: String) {

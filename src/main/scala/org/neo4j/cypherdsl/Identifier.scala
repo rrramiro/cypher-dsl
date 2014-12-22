@@ -47,7 +47,7 @@ object Identifier {
 
 }
 
-private[cypherdsl] case class Identifier(name: String) extends Value(new Identifier.IdentifierExpression(name)) with ReferenceExpression {
+case class Identifier(name: String) extends Value(new Identifier.IdentifierExpression(name)) with ReferenceExpression {
 
   /**
    * If this identifier represents a node or relationship,

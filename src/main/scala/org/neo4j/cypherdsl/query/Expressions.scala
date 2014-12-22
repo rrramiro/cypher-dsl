@@ -29,21 +29,14 @@ import org.neo4j.cypherdsl.expression.Expression
 class Expressions(expressions: Seq[Expression], separator: String = ",") extends AbstractExpression {
 
   def asString(builder: StringBuilder) {
-    {
-      var i: Int = 0
-      while (i < expressions.length) {
-        {
-          val expression: Expression = expressions(i)
-          if (i > 0) {
-            builder.append(separator)
-          }
-          expression.asString(builder)
-        }
-        ({
-          i += 1;
-          i - 1
-        })
+    var i: Int = 0
+    while (i < expressions.length) {
+      val expression: Expression = expressions(i)
+      if (i > 0) {
+        builder.append(separator)
       }
+      expression.asString(builder)
+      i += 1
     }
   }
 }

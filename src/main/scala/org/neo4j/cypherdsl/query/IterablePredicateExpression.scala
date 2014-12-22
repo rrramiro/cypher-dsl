@@ -27,7 +27,7 @@ import org.neo4j.cypherdsl.expression.{BooleanExpression, CollectionExpression}
 /**
  * Iterable predicates are of the form: function(name IN iterable WHERE predicate)
  */
-class IterablePredicateExpression(function: String, name: Identifier, iterable: CollectionExpression, predicate: BooleanExpression) extends AbstractExpression {
+case class IterablePredicateExpression(function: String, name: Identifier, iterable: CollectionExpression, predicate: BooleanExpression) extends AbstractExpression {
 
   def asString(builder: StringBuilder) {
     builder.append(function).append('(')

@@ -34,39 +34,39 @@ import scala.language.implicitConversions
 class ForEachStatement(forEachClause: ForEachClause) extends ForEachStatements with AsString {
 
   def create(paths: PathExpression*): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new CreateClause(paths: _*)))
+    new ForEachStatement(forEachClause.add(new CreateClause(paths: _*)))
   }
 
   def create(paths: Iterable[PathExpression]): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new CreateClause(paths.toList: _*)))
+    new ForEachStatement(forEachClause.add(new CreateClause(paths.toList: _*)))
   }
 
   def set(setProperties: SetProperty*): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new SetClause(setProperties: _*)))
+    new ForEachStatement(forEachClause.add(new SetClause(setProperties: _*)))
   }
 
   def set(setProperties: Iterable[SetProperty]): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new SetClause(setProperties.toList: _*)))
+    new ForEachStatement(forEachClause.add(new SetClause(setProperties.toList: _*)))
   }
 
   def delete(expressions: ReferenceExpression*): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new DeleteClause(expressions: _*)))
+    new ForEachStatement(forEachClause.add(new DeleteClause(expressions: _*)))
   }
 
   def delete(expressions: Iterable[ReferenceExpression]): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new DeleteClause(expressions.toList: _*)))
+    new ForEachStatement(forEachClause.add(new DeleteClause(expressions.toList: _*)))
   }
 
   def createUnique(expressions: PathExpression*): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new CreateUniqueClause(expressions)))
+    new ForEachStatement(forEachClause.add(new CreateUniqueClause(expressions)))
   }
 
   def createUnique(expressions: Iterable[PathExpression]): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(new CreateUniqueClause(expressions)))
+    new ForEachStatement(forEachClause.add(new CreateUniqueClause(expressions)))
   }
 
   def forEach(statement: ForEachStatement): ForEachStatement = {
-    return new ForEachStatement(forEachClause.add(statement.getClause))
+    new ForEachStatement(forEachClause.add(statement.getClause))
   }
 
   def asString(builder: StringBuilder) {
@@ -74,6 +74,6 @@ class ForEachStatement(forEachClause: ForEachClause) extends ForEachStatements w
   }
 
   def getClause: Clause = {
-    return forEachClause
+    forEachClause
   }
 }

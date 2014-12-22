@@ -24,7 +24,7 @@ import java.lang.StringBuilder
 /**
  * Represents a collection of PropertyValue
  */
-class PropertyValues(propertyValues: Iterable[PropertyValue]) extends AbstractExpression {
+case class PropertyValues(propertyValues: Iterable[PropertyValue]) extends AbstractExpression {
 
 
   def asString(builder: StringBuilder) {

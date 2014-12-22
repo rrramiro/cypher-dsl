@@ -102,6 +102,10 @@ private[cypherdsl] class Path(node: Expression, relationship: PathRelationship, 
     return new Path(node, relationship, propertyValues, nodeLabels)
   }
 
+  def relationship(direction: Direction.Value, relationships: String*): PathRelationship = {
+    return new PathRelationship(this, direction, null, identifiers(relationships: _*), null, null, null)
+  }
+
   /**
    * Declare a new outgoing relationship from this node.
    * <p/>

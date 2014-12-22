@@ -31,54 +31,54 @@ import org.neo4j.cypherdsl.expression.{BooleanExpression, CollectionExpression, 
 abstract class AbstractExpression extends Expression {
 
   def eq(expression: String): BooleanExpression = {
-    return new Value(new Operator(this, "="), literal(expression))
+    new Value(new Operator(this, "="), literal(expression))
   }
 
   override def eq(expression: Number): BooleanExpression = {
-    return new Value(new Operator(this, "="), literal(expression))
+    new Value(new Operator(this, "="), literal(expression))
   }
 
 
   def eq(expression: Expression): BooleanExpression = {
-    return new Value(new Operator(this, "="), expression)
+    new Value(new Operator(this, "="), expression)
   }
 
   def ne(expression: String): BooleanExpression = {
-    return new Value(new Operator(this, "<>"), literal(expression))
+    new Value(new Operator(this, "<>"), literal(expression))
   }
 
   def ne(expression: Number): BooleanExpression = {
-    return new Value(new Operator(this, "<>"), literal(expression))
+    new Value(new Operator(this, "<>"), literal(expression))
   }
 
   def ne(expression: Expression): BooleanExpression = {
-    return new Value(new Operator(this, "<>"), expression)
+    new Value(new Operator(this, "<>"), expression)
   }
 
   def and(expression: BooleanExpression): BooleanExpression = {
-    return new CypherQuery.And(this.asInstanceOf[BooleanExpression], expression)
+    new CypherQuery.And(this.asInstanceOf[BooleanExpression], expression)
   }
 
   def or(expression: BooleanExpression): BooleanExpression = {
-    return new CypherQuery.Or(this.asInstanceOf[BooleanExpression], expression)
+    new CypherQuery.Or(this.asInstanceOf[BooleanExpression], expression)
   }
 
   def in(collection: CollectionExpression): BooleanExpression = {
-    return new Value(new Operator(this, " IN "), collection)
+    new Value(new Operator(this, " IN "), collection)
   }
 
   def union(expression: CollectionExpression): CollectionExpression = {
-    return new Value(new Operator(this, "+"), expression)
+    new Value(new Operator(this, "+"), expression)
   }
 
   @throws(classOf[CloneNotSupportedException])
   override def clone: AnyRef = {
-    return super.clone
+    super.clone
   }
 
   override def toString: String = {
     val builder: StringBuilder = new StringBuilder
     asString(builder)
-    return builder.toString
+    builder.toString
   }
 }

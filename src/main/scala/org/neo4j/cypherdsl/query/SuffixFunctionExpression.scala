@@ -26,7 +26,7 @@ import org.neo4j.cypherdsl.expression.Expression
 /**
  * Expresses all functions of the form "exp f", such as "exp is null"
  */
-class SuffixFunctionExpression(name: String, expression: Expression) extends AbstractExpression {
+case class SuffixFunctionExpression(name: String, expression: Expression) extends AbstractExpression {
 
   def asString(builder: StringBuilder) {
     expression.asString(builder)

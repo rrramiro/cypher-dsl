@@ -26,7 +26,7 @@ import org.neo4j.cypherdsl.expression.Expression
 /**
  * Expresses all functions of the form "f(exp)"
  */
-class FunctionExpression(name: String, expression: Expression) extends AbstractExpression {
+case class FunctionExpression(name: String, expression: Expression) extends AbstractExpression {
 
 
   def asString(builder: StringBuilder) {

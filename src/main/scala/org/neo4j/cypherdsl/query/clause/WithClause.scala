@@ -30,7 +30,7 @@ import scala.language.implicitConversions
 /**
  * WITH clause
  */
-class WithClause(expressionsParameter: Expression*) extends Clause {
+case class WithClause(expressionsParameter: Expression*) extends Clause {
   val expressions = expressionsParameter.toList
 
   def asString(builder: StringBuilder) {

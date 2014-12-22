@@ -35,21 +35,14 @@ abstract class Clause extends AsString with Serializable with Cloneable {
       }
       builder.append(name).append(' ')
 
-      {
-        var i: Int = 0
-        while (i < asStringList.size) {
-          {
-            val asString: AsString = asStringList(i)
-            if (i > 0) {
-              builder.append(separator)
-            }
-            asString.asString(builder)
-          }
-          ({
-            i += 1;
-            i - 1
-          })
+      var i: Int = 0
+      while (i < asStringList.size) {
+        val asString: AsString = asStringList(i)
+        if (i > 0) {
+          builder.append(separator)
         }
+        asString.asString(builder)
+        i += 1
       }
     }
   }
