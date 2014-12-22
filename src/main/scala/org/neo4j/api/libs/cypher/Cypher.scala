@@ -7,7 +7,7 @@ import org.neo4j.cypherdsl.{CypherQuery, Identifier => CypherIdentifier}
 /**
  * Helper functions to handle CyValues.
  */
-object Cyon {
+object Cypher {
 
   def node(cyLabels: String*) = new CyNodeBuilder().labels(cyLabels: _*)
 
@@ -18,9 +18,9 @@ object Cyon {
   /**
    * Provided a Writes implicit for its type is available, convert any object into a CyValue.
    *
-   * @param o Value to convert in Cyon.
+   * @param o Value to convert in Cypher.
    */
-  def toCyon[T](o: T)(implicit tjs: WritesCyPath[T]): CyPaths = tjs.writes(o)
+  def toCypher[T](o: T)(implicit tjs: WritesCyPath[T]): CyPaths = tjs.writes(o)
 
   def stringify(cyNode: CyPaths): String = {
     val context = new CypherBuilderContext

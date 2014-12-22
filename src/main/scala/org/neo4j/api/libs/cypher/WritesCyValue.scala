@@ -3,10 +3,10 @@ package org.neo4j.api.libs.cypher
 import scala.annotation.implicitNotFound
 
 /**
- * Cyon serializer: write an implicit to define a serializer for any type
+ * Cypher serializer: write an implicit to define a serializer for any type
  */
 @implicitNotFound(
-  "No Cyon serializer found for type ${A}. Try to implement an implicit Writes or Format for this type."
+  "No Cypher serializer found for type ${A}. Try to implement an implicit Writes or Format for this type."
 )
 trait WritesCyValue[-A] {
 

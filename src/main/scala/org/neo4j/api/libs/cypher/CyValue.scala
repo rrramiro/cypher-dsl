@@ -13,14 +13,14 @@ sealed trait CyValue {
 }
 
 /**
- * Represents a Cyon null value.
+ * Represents a Cypher null value.
  */
 case object CyNull extends CyValue {
   def value = throw new Exception("CyNull")
 }
 
 ///**
-// * Represent a missing Cyon value.
+// * Represent a missing Cypher value.
 // */
 //class CyUndefined(err: => String) extends CyValue {
 //  def error = err
@@ -33,7 +33,7 @@ case object CyNull extends CyValue {
 //}
 
 /**
- * Represent a Cyon boolean value.
+ * Represent a Cypher boolean value.
  */
 case class CyBoolean(value: Boolean) extends CyValue {
   type ValueType = Boolean
@@ -41,14 +41,14 @@ case class CyBoolean(value: Boolean) extends CyValue {
 
 
 /**
- * Represent a Cyon number value.
+ * Represent a Cypher number value.
  */
 case class CyNumber(value: BigDecimal) extends CyValue {
   type ValueType = BigDecimal
 }
 
 /**
- * Represent a Cyon string value.
+ * Represent a Cypher string value.
  */
 case class CyString(value: String) extends CyValue {
   type ValueType = String
@@ -56,7 +56,7 @@ case class CyString(value: String) extends CyValue {
 
 
 /**
- * Represent a Cyon object value.
+ * Represent a Cypher object value.
  */
 case class CyValues(value: Map[String, CyValue]) {
 

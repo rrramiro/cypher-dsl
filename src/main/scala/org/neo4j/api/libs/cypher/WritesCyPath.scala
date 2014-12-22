@@ -4,10 +4,10 @@ import scala.annotation.implicitNotFound
 
 
 /**
- * Cyon serializer: write an implicit to define a serializer for any type
+ * Cypher serializer: write an implicit to define a serializer for any type
  */
 @implicitNotFound(
-  "No Cyon serializer found for type ${A}. Try to implement an implicit Writes or Format for this type."
+  "No Cypher serializer found for type ${A}. Try to implement an implicit Writes or Format for this type."
 )
 trait WritesCyPath[-A] {
 
@@ -19,7 +19,7 @@ trait WritesCyPath[-A] {
 }
 
 @implicitNotFound(
-  "No Cyon serializer as CyObject found for type ${A}. Try to implement an implicit OWrites or OFormat for this type."
+  "No Cypher serializer as CyObject found for type ${A}. Try to implement an implicit OWrites or OFormat for this type."
 )
 trait OWrites[-A] extends WritesCyPath[A] {
 
@@ -59,7 +59,7 @@ trait DefaultWritesCyNode {
   //   * Serializer for Map[String,V] types.
   //   */
   //  implicit def mapWrites[V](implicit fmtv: Writes[V]): OWrites[collection.immutable.Map[String, V]] = OWrites[collection.immutable.Map[String, V]] { ts =>
-  //    new CyNodes(ts.map { case (k, v) => (k, toCyon(v)(fmtv)) }.toList)
+  //    new CyNodes(ts.map { case (k, v) => (k, toCypher(v)(fmtv)) }.toList)
   //  }
 
 
