@@ -12,6 +12,8 @@ object Cyon {
 
   def node(cyLabels: String*) = new CyNodeBuilder().labels(cyLabels: _*)
 
+  def nodeReference(key: String, id: String) = new CyNodeReferenceBuilder(key, id)
+
   def labels(cyLabels: String*) = new CyLabels(cyLabels: _*)
 
   /**

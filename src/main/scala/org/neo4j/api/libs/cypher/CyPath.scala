@@ -24,22 +24,8 @@ case object CyPathNull extends CyPath {
 
 }
 
-
-class CyNodeBuilder  {
-
-  var cyLabels: ListBuffer[String] = new ListBuffer[String]
-  var cyValues = mutable.Seq[(String, CyValue)]()
+trait CyRelationshipBuilder {
   var cyRelationships: ListBuffer[CyRelationship] = new ListBuffer[CyRelationship]
-
-  def labels(labels: String*) = {
-    this.cyLabels ++= labels
-    this
-  }
-
-  def values(fields: (String, CyValueWrapper)*) = {
-    this.cyValues ++= Cyon.values(fields: _*).fieldSet
-    this
-  }
 
   def out(label: String, nodes: CyNodeWrapper*) = {
     this.cyRelationships ++= Cyon.out(label, nodes: _*).relationships
@@ -56,14 +42,39 @@ class CyNodeBuilder  {
     this
   }
 
-  def build = CyPaths(CyNode(CyLabels(cyLabels: _*), new CyValues(cyValues)), CyRelationships(cyRelationships))
-
+  def build: CyPaths
 }
 
-case class CyPaths(cyNode: CyNode, cyRelationships: CyRelationships) extends CyPath
+class CyNodeReferenceBuilder(val key: String, val id: String) extends CyRelationshipBuilder{
+  def build = CyPaths(CyNodeReference(key, id), CyRelationships(cyRelationships))
+}
+
+class CyNodeBuilder extends CyRelationshipBuilder {
+
+  var cyLabels: ListBuffer[String] = new ListBuffer[String]
+  var cyValues = mutable.Seq[(String, CyValue)]()
+
+
+  def labels(labels: String*) = {
+    this.cyLabels ++= labels
+    this
+  }
+
+  def values(fields: (String, CyValueWrapper)*) = {
+    this.cyValues ++= Cyon.values(fields: _*).fieldSet
+    this
+  }
+
+  def build = CyPaths(CyNode(CyLabels(cyLabels), new CyValues(cyValues)), CyRelationships(cyRelationships))
+}
+
+case class CyPaths(cyNode: CyPath, cyRelationships: CyRelationships) extends CyPath
 
 case class CyNode(cyLabels: CyLabels, cyValues: CyValues) extends CyPath
+
+case class CyNodeReference(key: String, refId: String, index: String = "node_auto_index") extends CyPath
 
 case class CyRelationships(relationships: Seq[CyRelationship])
 
 case class CyRelationship(direction: Direction.Value, cyLabels: CyLabels, node: CyPath)
+
