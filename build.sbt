@@ -18,5 +18,6 @@ libraryDependencies ++= Seq(
     "org.neo4j" % "neo4j-kernel" % "2.0.4" % "test" classifier "tests",
     "com.novocode" % "junit-interface" % "0.11" % "test",
     "joda-time" % "joda-time" % "2.3",
-    "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test"
+    "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test",
+    "org.scala-lang" % "scala-reflect" % "2.11.4"
 )
