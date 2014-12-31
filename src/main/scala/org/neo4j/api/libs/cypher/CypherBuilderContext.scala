@@ -28,7 +28,10 @@ class CypherBuilderContext {
       case cyNode: CyNode =>
         paths += CypherQuery.node(idNode)
           .labels(cyNode.cyLabels.labels.map { l => CypherQuery.label(l)}: _*)
-          .values(cyNode.cyValues.value.map { case (key, prop) => new PropertyValue(CypherQuery.identifier(key), cyValueToLiteral(prop))})
+          .values(cyNode.cyValues.value.collect {
+            case (key, prop) if prop != CyNull =>
+              new PropertyValue(CypherQuery.identifier(key), cyValueToLiteral(prop))
+          })
       case cyRef: CyNodeReference =>
         refs += CypherQuery.lookup(idNode, CypherQuery.identifier(cyRef.index), CypherQuery.identifier(cyRef.key), CypherQuery.literal(cyRef.refId))
       case CyPathNull =>
