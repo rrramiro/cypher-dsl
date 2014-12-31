@@ -45,7 +45,7 @@ trait CyRelationshipBuilder {
 }
 
 class CyNodeReferenceBuilder(val key: String, val id: String) extends CyRelationshipBuilder {
-  def build = CyPaths(CyNodeReference(key, id), CyRelationships(cyRelationships))
+  def build = CyPathsImpl(CyNodeReference(key, id), CyRelationships(cyRelationships))
 }
 
 class CyNodeBuilder extends CyRelationshipBuilder {
@@ -64,10 +64,20 @@ class CyNodeBuilder extends CyRelationshipBuilder {
     this
   }
 
-  def build = CyPaths(CyNode(CyLabels(cyLabels: _*), new CyValues(cyValues)), CyRelationships(cyRelationships))
+  def build = CyPathsImpl(CyNode(CyLabels(cyLabels: _*), new CyValues(cyValues)), CyRelationships(cyRelationships))
 }
 
-case class CyPaths(cyNode: CyPath, cyRelationships: CyRelationships)
+sealed trait CyPaths {
+  val cyNode: CyPath
+  val cyRelationships: CyRelationships
+}
+
+case class CyPathsImpl(cyNode: CyPath, cyRelationships: CyRelationships) extends CyPaths
+
+case object CyPathsNull extends CyPaths {
+  val cyNode = CyPathNull
+  val cyRelationships = CyRelationships(List.empty)
+}
 
 case class CyNode(cyLabels: CyLabels, cyValues: CyValues) extends CyPath
 

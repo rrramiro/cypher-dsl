@@ -76,7 +76,7 @@ trait DefaultWritesCyNode {
   implicit def OptionWrites[T](implicit fmt: WritesCyPath[T]): WritesCyPath[Option[T]] = new WritesCyPath[Option[T]] {
     def writes(o: Option[T]) = o match {
       case Some(value) => fmt.writes(value)
-      case None => CyPaths(CyPathNull, CyRelationships(List.empty))
+      case None => CyPathsNull
     }
   }
 

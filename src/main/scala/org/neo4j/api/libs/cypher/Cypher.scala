@@ -30,7 +30,7 @@ object Cypher {
 
   private def asNode(cyPath: CyPaths, context: CypherBuilderContext): CypherIdentifier = {
     val idNode: CypherIdentifier = context.createNodeOrGetId(cyPath.cyNode)
-    context.paths ++= cyPath.cyRelationships.relationships.map { rel =>
+    context.paths ++= cyPath.cyRelationships.relationships.collect { case rel if rel.nodes.isInstanceOf[CyPathsImpl] =>
       CypherQuery.node(idNode).relationship(rel.direction, rel.cyLabels.labels: _*).node(asNode(rel.nodes, context))
     }
     idNode

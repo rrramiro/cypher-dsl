@@ -48,7 +48,7 @@ class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifie
    * @return
    */
   def values(propertyValues: PropertyValue*): PathRelationship = {
-    return new PathRelationship(leftNode, direction, as, relationships, new PropertyValues(propertyValues), minHops, maxHops)
+    new PathRelationship(leftNode, direction, as, relationships, new PropertyValues(propertyValues), minHops, maxHops)
   }
 
   /**
@@ -66,7 +66,7 @@ class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifie
    * @return
    */
   def values(propertyValues: Iterable[PropertyValue]): PathRelationship = {
-    return new PathRelationship(leftNode, direction, as, relationships, new PropertyValues(propertyValues), minHops, maxHops)
+    new PathRelationship(leftNode, direction, as, relationships, new PropertyValues(propertyValues), minHops, maxHops)
   }
 
   /**
@@ -81,7 +81,7 @@ class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifie
    * @return
    */
   def as(name: String): PathRelationship = {
-    return as(CypherQuery.identifier(name))
+    as(CypherQuery.identifier(name))
   }
 
   /**
@@ -97,7 +97,7 @@ class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifie
    */
   def as(name: Identifier): PathRelationship = {
     Query.checkNull(name, "Name")
-    return new PathRelationship(leftNode, direction, name, relationships, relationshipPropertyValues, minHops, maxHops)
+    new PathRelationship(leftNode, direction, name, relationships, relationshipPropertyValues, minHops, maxHops)
   }
 
   /**
@@ -120,7 +120,7 @@ class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifie
     if (maxHops != null && maxHops < 0) {
       throw new IllegalArgumentException("Maximum number of hops must be over zero")
     }
-    return new PathRelationship(leftNode, direction, as, relationships, relationshipPropertyValues, minHops, maxHops)
+    new PathRelationship(leftNode, direction, as, relationships, relationshipPropertyValues, minHops, maxHops)
   }
 
   /**
@@ -136,7 +136,7 @@ class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifie
    * @return
    */
   def node: Path = {
-    return new Path(null, this, null, null)
+    new Path(null, this, null, null)
   }
 
   /**
@@ -152,7 +152,7 @@ class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifie
    * @return
    */
   def node(id: String): Path = {
-    return node(identifier(id))
+    node(identifier(id))
   }
 
   /**
@@ -168,12 +168,17 @@ class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifie
    * @return
    */
   def node(id: Expression): Path = {
-    return new Path(id, this, null, null)
+    new Path(id, this, null, null)
   }
+
+  def node(node: Path): Path = {
+    new Path(node.node, this, node.nodePropertyValues, node.nodeLabels)
+  }
+
 
   def asString(builder: StringBuilder) {
     leftNode.asString(builder)
-    builder.append(if ((direction == Direction.IN)) "<-" else "-")
+    builder.append(if (direction == Direction.IN) "<-" else "-")
     val hasRelationships: Boolean = relationships.iterator.hasNext
     if (as != null || hasRelationships || minHops != null || maxHops != null || relationshipPropertyValues != null) {
       builder.append('[')
@@ -205,6 +210,6 @@ class PathRelationship(leftNode: Path, direction: Direction.Value, as: Identifie
       }
       builder.append(']')
     }
-    builder.append(if ((direction == Direction.OUT)) "->" else "-")
+    builder.append(if (direction == Direction.OUT) "->" else "-")
   }
 }

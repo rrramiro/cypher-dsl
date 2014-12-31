@@ -31,7 +31,7 @@ import scala.language.implicitConversions
 /**
  * Represents either a single node or a path from one node to another.
  */
-private[cypherdsl] class Path(node: Expression, relationship: PathRelationship, nodePropertyValues: Expression, nodeLabels: Expression) extends AbstractExpression with PathExpression {
+case class Path(node: Expression, relationship: PathRelationship, nodePropertyValues: Expression, nodeLabels: Expression) extends AbstractExpression with PathExpression {
 
   def labels(labels: LabelValue*): Path = {
     return new Path(node, relationship, nodePropertyValues, new LabelValues(labels))
@@ -66,6 +66,14 @@ private[cypherdsl] class Path(node: Expression, relationship: PathRelationship, 
   def values(propertyValues: PropertyValue*): Path = {
     return new Path(node, relationship, new PropertyValues(propertyValues), nodeLabels)
   }
+
+  //ToDo Remove this method
+  @Deprecated
+  def values(firstPropertyValue:(String, AnyRef), otherPropertyValues: (String, AnyRef)*): Path = {
+    val propertyValues = firstPropertyValue :: otherPropertyValues.toList
+    new Path(node, relationship, new PropertyValues(propertyValues.map(item => CypherQuery.value(item._1, item._2.toString))), nodeLabels)
+  }
+
 
   /**
    * If this node is used in a CREATE or CREATE UNIQUE clause,

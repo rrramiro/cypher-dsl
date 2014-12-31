@@ -31,8 +31,8 @@ class CypherBuilderContext {
           .values(cyNode.cyValues.value.map { case (key, prop) => new PropertyValue(CypherQuery.identifier(key), cyValueToLiteral(prop))})
       case cyRef: CyNodeReference =>
         refs += CypherQuery.lookup(idNode, CypherQuery.identifier(cyRef.index), CypherQuery.identifier(cyRef.key), CypherQuery.literal(cyRef.refId))
-      case _ =>
-        throw new Exception("Unknown type")
+      case CyPathNull =>
+        // nothing to do
     }
     idNode
   }
