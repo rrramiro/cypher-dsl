@@ -32,36 +32,36 @@ object AbstractCypherTest {
   private var graphdb: ImpermanentGraphDatabase = null
   protected var engine: ExecutionEngine = null
 
-  @BeforeClass
-  @throws(classOf[IOException])
-  def classSetup {
-    graphdb = new TestGraphDatabaseFactory().newImpermanentDatabase.asInstanceOf[ImpermanentGraphDatabase]
-    graphdb.cleanContent
-    engine = new ExecutionEngine(graphdb)
-  }
-
-  @AfterClass def teardown {
-    graphdb.shutdown
-  }
+//  @BeforeClass
+//  @throws(classOf[IOException])
+//  def classSetup {
+//    graphdb = new TestGraphDatabaseFactory().newImpermanentDatabase.asInstanceOf[ImpermanentGraphDatabase]
+//    graphdb.cleanContent
+//    engine = new ExecutionEngine(graphdb)
+//  }
+//
+//  @AfterClass def teardown {
+//    graphdb.shutdown
+//  }
 }
 
 abstract class AbstractCypherTest {
   private var tx: Transaction = null
-
-  @Before
-  @throws(classOf[Exception])
-  def setUp {
-    tx = AbstractCypherTest.graphdb.beginTx
-  }
-
-  @After def cleanContent {
-    if (tx != null) {
-      tx.failure
-      tx.finish
-      tx = null
-    }
-    AbstractCypherTest.graphdb.cleanContent
-  }
+//
+//  @Before
+//  @throws(classOf[Exception])
+//  def setUp {
+//    tx = AbstractCypherTest.graphdb.beginTx
+//  }
+//
+//  @After def cleanContent {
+//    if (tx != null) {
+//      tx.failure
+//      tx.finish
+//      tx = null
+//    }
+//    AbstractCypherTest.graphdb.cleanContent
+//  }
 
   protected def assertQueryEquals(expected: String, query: String, params: Map[String, Any] = Map.empty) {
     assertEquals(expected, query)
