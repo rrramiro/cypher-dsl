@@ -80,4 +80,14 @@ trait DefaultWritesCyNode {
     }
   }
 
+  /**
+   * Serializer for Either.
+   */
+  implicit def EitherWrites[A, B](implicit fmtA: WritesCyPath[A], fmtB: WritesCyPath[B]): WritesCyPath[Either[A, B]] = new WritesCyPath[Either[A, B]] {
+    def writes(o: Either[A, B]) = o match {
+      case Left(a) => fmtA.writes(a)
+      case Right(b) => fmtB.writes(b)
+    }
+  }
+
 }

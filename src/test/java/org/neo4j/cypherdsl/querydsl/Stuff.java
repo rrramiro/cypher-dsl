@@ -17,22 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.neo4j.cypherdsl.querydsl
+package org.neo4j.cypherdsl.querydsl;
 
-import com.mysema.query.annotations.QueryEntity
+import com.mysema.query.annotations.QueryEntity;
 
 /**
- * Person entity
+ * Stuff entity
  */
-@QueryEntity class Person {
-  private[querydsl] var firstName: String = null
-  private[querydsl] var age: Int = 0
+@QueryEntity
+public class Stuff
+{
+    String name;
 
-  def getFirstName: String = {
-    return firstName
-  }
-
-  def getAge: Int = {
-    return age
-  }
+    public String getName()
+    {
+        return name;
+    }
 }

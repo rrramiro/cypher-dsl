@@ -1,3 +1,5 @@
+//import org.apache.commons.io.FileUtils
+//import collection.JavaConversions._
 
 name := "neo4j-cypher-dsl-scala"
 
@@ -21,3 +23,27 @@ libraryDependencies ++= Seq(
     "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test",
     "org.scala-lang" % "scala-reflect" % "2.11.4"
 )
+
+//sourceGenerators in Compile <+= (
+//  javaSource in Test,
+//  sourceManaged in Compile,
+//  classDirectory in Compile,
+//  dependencyClasspath in Compile,
+//  compilers in Compile, streams) map {
+//    (sourceDir, generatedSourceDir, classDir, classpath, compilers, streams) => {
+//      val commonJavacOptions = Seq("-source", "1.7", "-target", "1.7", "-encoding", "utf-8", "-Xlint:unchecked")
+//      FileUtils.forceMkdir(classDir)
+//      FileUtils.forceMkdir(generatedSourceDir)
+//      FileUtils.cleanDirectory(generatedSourceDir)
+//      compilers.javac.apply(
+//        sources = FileUtils.listFiles(sourceDir, Array("java"), true).toSeq,
+//        classpath = classpath.map(_.data),
+//        outputDirectory = classDir,
+//        options = commonJavacOptions ++ Seq(
+//            "-proc:only", "-AfullyAnnotationConfigured=true", "-processor", "com.mysema.query.apt.QuerydslAnnotationProcessor",
+//            "-s", generatedSourceDir.getCanonicalPath
+//        )
+//      )(streams.log)
+//      FileUtils.listFiles(sourceDir, Array("java"), true).toSeq
+//    }
+//}
